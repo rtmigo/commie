@@ -38,8 +38,6 @@ for comment in commie.iter_comments_file(Path("/path/to/source.cpp")):
 | `commie.iter_comments_sass` | SASS |
 
 ```python
-# in this example we'll parse a Go source file
-
 import commie
 
 source_code_in_golang=loadSomehow(...)
@@ -54,8 +52,6 @@ for comment in commie.iter_comments_go(source_code_in_golang):
 Method `commie.iter_comments` will try to guess the file format from the provided filename
 
 ```python
-# in this example we'll parse a Go source file
-
 from pathlib import Path
 import commie
 

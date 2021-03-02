@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
   name="commie",
-  version="1.0.1",
+  version="1.0.2",
 
   author="Art Galkin",
   author_email="ortemeo@gmail.com",
@@ -25,7 +25,9 @@ setup(
   #           'allrights = allrights:main',
   #       ]},
 
-  keywords=['comments', 'source code'],
+  keywords="""
+    css python c search java go html sass c-sharp dart bash parser 
+    typescript parsing xml comments source-code""".split(),
 
   # https://pypi.org/classifiers/
   classifiers=[

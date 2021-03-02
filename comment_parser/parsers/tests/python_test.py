@@ -12,7 +12,7 @@ class PythonParserTest(unittest.TestCase):
   def testComment(self):
     code = '# comment'
     comments = list(python_parser.extract_comments(code))
-    expected = [Comment(" comment", 0, 8, False)]
+    expected = [Comment(" comment", 0, len(code), False)]
     self.assertEqual(comments, expected)
 
   def testCommentInSingleQuotedString(self):
@@ -38,7 +38,7 @@ class PythonParserTest(unittest.TestCase):
   def testEscapedSingleQuote(self):
     code = "\\'# this is a comment"
     comments = list(python_parser.extract_comments(code))
-    expected = [Comment(" this is a comment", 2, len(code)-1, False)]
+    expected = [Comment(" this is a comment", 2, len(code), False)]
     self.assertEqual(comments, expected)
 
     c = comments[0]
@@ -47,5 +47,5 @@ class PythonParserTest(unittest.TestCase):
   def testEscapedDoubleQuote(self):
     code = '\\"# this is another comment'
     comments = list(python_parser.extract_comments(code))
-    expected = [Comment(" this is another comment", 2, len(code)-1, False)]
+    expected = [Comment(" this is another comment", 2, len(code), False)]
     self.assertEqual(comments, expected)

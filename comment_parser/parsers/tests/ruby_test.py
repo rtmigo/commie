@@ -13,8 +13,9 @@ class ShellParserTest(unittest.TestCase):
   def testComment(self):
     code = '# comment'
     comments = list(ruby_parser.extract_comments(code))
-    expected = [Comment(" comment", 0, 9, False)]
+    expected = [Comment(" comment", 0, len(code), False)]
     self.assertEqual(comments, expected)
+    self.assertEqual(code[comments[0].end-1], 't')
 
   def testCommentInSingleQuotedString(self):
     code = "'this is # not a comment'"
@@ -65,4 +66,3 @@ class ShellParserTest(unittest.TestCase):
     comments = list(ruby_parser.extract_comments(code))
     expected = [Comment(' "a comment"', 10, 23, False)]
     self.assertEqual(comments, expected)
-    

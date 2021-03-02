@@ -12,7 +12,7 @@ class ShellParserTest(unittest.TestCase):
   def testComment(self):
     code = '# comment'
     comments = list(shell_parser.extract_comments(code))
-    expected = [Comment(" comment", 0, 8, False)]
+    expected = [Comment(" comment", 0, len(code), False)]
     self.assertEqual(comments, expected)
 
   def testEscapedComment(self):
@@ -43,11 +43,11 @@ class ShellParserTest(unittest.TestCase):
   def testEscapedSingleQuote(self):
     code = "\\'# this is a comment"
     comments = list(shell_parser.extract_comments(code))
-    expected = [Comment(" this is a comment", 2, len(code) - 1, False)]
+    expected = [Comment(" this is a comment", 2, len(code), False)]
     self.assertEqual(comments, expected)
 
   def testEscapedDoubleQuote(self):
     code = '\\"# this is another comment'
     comments = list(shell_parser.extract_comments(code))
-    expected = [Comment(" this is another comment", 2, len(code) - 1, False)]
+    expected = [Comment(" this is another comment", 2, len(code), False)]
     self.assertEqual(comments, expected)

@@ -71,7 +71,7 @@ def extract_comments(code: str) -> Iterable[Comment]:
         yield common.Comment(
           text=current_comment_text,
           start=comment_start_pos,
-          end=position,
+          end=position+1,
           multiline=False)
         current_comment_text = ''
         state = WAITING_FOR_COMMENT
@@ -91,7 +91,7 @@ def extract_comments(code: str) -> Iterable[Comment]:
         yield Comment(
           text=current_comment_text,
           start=comment_start_pos,
-          end=position,
+          end=position+1,
           multiline=True)
         current_comment_text = ''
         state = WAITING_FOR_COMMENT
@@ -120,6 +120,6 @@ def extract_comments(code: str) -> Iterable[Comment]:
     yield common.Comment(
       text=current_comment_text,
       start=comment_start_pos,
-      end=position,
+      end=position+1,
       multiline=False)
 

@@ -50,7 +50,7 @@ def extract_comments(code: str) -> Iterable[Comment]:
         state = ESCAPING_CHAR_OUTSIDE_OF_STRING
     elif state == IN_COMMENT:
       if char == '\n':
-        yield Comment(current_comment_text, comment_start_pos, position - 1, False)
+        yield Comment(current_comment_text, comment_start_pos, position, False)
         current_comment_text = ''
         state = DEFAULT
       else:
@@ -71,4 +71,4 @@ def extract_comments(code: str) -> Iterable[Comment]:
   # end of file
 
   if state == IN_COMMENT:
-    yield Comment(current_comment_text, comment_start_pos, position, False)
+    yield Comment(current_comment_text, comment_start_pos, position+1, False)

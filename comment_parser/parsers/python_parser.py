@@ -57,7 +57,7 @@ def extract_comments(code: str) -> Iterable[Comment]:
       yield Comment(
         text=token.text[1:],  # without leading '#' character
         start=token.start,
-        end=token.end-1,
+        end=token.end,
         multiline=False
       )
 

@@ -11,6 +11,7 @@
 from pathlib import Path
 import commie
 
+# in this example we'll parse a Go source file
 sourceCode=Path("/path/to/mycode.go").read_text()
 
 for comment in commie.iter_comments_go(sourceCode):

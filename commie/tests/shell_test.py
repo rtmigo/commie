@@ -8,7 +8,7 @@ from commie import shell_parser
 from commie.common import Comment
 
 
-@unittest.skip
+@unittest.skip #todo
 class ShellParserTest(unittest.TestCase):
 
   def testComment(self):

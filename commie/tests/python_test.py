@@ -5,17 +5,19 @@
 import unittest
 
 from commie import python_parser
-from commie.common import Comment
 
 
-@unittest.skip
 class PythonParserTest(unittest.TestCase):
 
   def testComment(self):
     code = '# comment'
     comments = list(python_parser.extract_comments(code))
-    expected = [Comment(" comment", 0, len(code), False)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.extract(code), '# comment')
+    self.assertEqual(comments[0].text_span.extract(code), " comment")
+    self.assertEqual(comments[0].multiline, False)
 
   def testCommentInSingleQuotedString(self):
     code = "'this is # not a comment'"
@@ -40,14 +42,19 @@ class PythonParserTest(unittest.TestCase):
   def testEscapedSingleQuote(self):
     code = "\\'# this is a comment"
     comments = list(python_parser.extract_comments(code))
-    expected = [Comment(" this is a comment", 2, len(code), False)]
-    self.assertEqual(comments, expected)
 
-    c = comments[0]
-    self.assertEqual(code[c.start:c.end+1], "# this is a comment")
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.extract(code), "# this is a comment")
+    self.assertEqual(comments[0].text_span.extract(code), " this is a comment")
+    self.assertEqual(comments[0].multiline, False)
 
   def testEscapedDoubleQuote(self):
     code = '\\"# this is another comment'
     comments = list(python_parser.extract_comments(code))
-    expected = [Comment(" this is another comment", 2, len(code), False)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.extract(code), "# this is another comment")
+    self.assertEqual(comments[0].text_span.extract(code), " this is another comment")
+    self.assertEqual(comments[0].multiline, False)

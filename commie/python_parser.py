@@ -6,7 +6,7 @@ import io
 import tokenize
 from typing import NamedTuple, Iterable
 
-from commie.common import Comment
+from commie.common import Comment, Span
 
 
 class PosToken(NamedTuple):
@@ -55,9 +55,8 @@ def extract_comments(code: str) -> Iterable[Comment]:
   for token in postokenize(io.BytesIO(code.encode())):
     if token.tokenType == tokenize.COMMENT:
       yield Comment(
-        text=token.text[1:],  # without leading '#' character
-        start=token.start,
-        end=token.end,
+        text_span=Span(token.start+1, token.end),
+        markup_span=Span(token.start, token.end),
         multiline=False
       )
 

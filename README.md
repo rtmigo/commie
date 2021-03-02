@@ -5,7 +5,7 @@
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/commie.svg)](https://pypi.python.org/pypi/commie/)
 
 A fork from [comment_parser](https://github.com/jeanralphaviles/comment_parser). 
-Differences from the original:
+Motivation:
 
 | **comment_parser** | **commie** |
 |--------------------|------------|

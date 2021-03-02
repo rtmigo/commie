@@ -4,7 +4,7 @@
 
 from typing import Iterable
 
-from comment_parser.parsers.common import Comment
+from comment_parser.common import Comment
 
 
 def extract_comments(code: str) -> Iterable[Comment]:

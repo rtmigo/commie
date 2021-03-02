@@ -4,26 +4,23 @@
 
 from typing import Iterable
 
-from comment_parser.parsers import common
-from comment_parser.parsers.common import Comment
+from comment_parser import common
+from comment_parser.common import Comment
 
-
-def extract_comments(goCode: str) -> Iterable[Comment]:
-  """Extracts a list of comments from the given Go source code.
+def extract_comments(code: str) -> Iterable[Comment]:
+  """Extracts a list of comments from the given Javascript source code.
 
   Comments are represented with the Comment class found in the common module.
-  Go comments come in two forms, single and multi-line comments.
+  Javascript comments come in two forms, single and multi-line comments.
     - Single-line comments begin with '//' and continue to the end of line.
     - Multi-line comments begin with '/*' and end with '*/' and can span
       multiple lines of code. If a multi-line comment does not terminate
       before EOF is reached, then an exception is raised.
-  Go comments are not allowed to start in a string or rune literal. This
-  module makes sure to watch out for those.
-
-  https://golang.org/ref/spec#Comments
+  This module takes quoted strings into account when extracting comments from
+  source code.
 
   Args:
-    goCode: String containing code to extract comments from.
+    code: String containing code to extract comments from.
   Returns:
     Python list of common.Comment in the order that they appear in the code.
   Raises:
@@ -31,88 +28,98 @@ def extract_comments(goCode: str) -> Iterable[Comment]:
       comment.
   """
 
-  DEFAULT = 0
-  AFTER_SLASH = 1
+  WAITING_FOR_COMMENT = 0
   IN_SINGLE_LINE_COMMENT = 2
   IN_MULTI_LINE_COMMENT = 3
   IN_MULTI_LINE_COMMENT_ASTERISK = 4
   IN_STRING = 5
-  IN_STRING_ESCAPING = 6
+  IN_STRING_ESCAPE_NEXT_CHAR = 6
+  FOUND_SLASH = 1
 
-  state = DEFAULT
-  current_comment = ''
+  state = WAITING_FOR_COMMENT
+  current_comment_text = ''
 
-  line_counter = 1
-  string_char = ''
-
-  position = -1
   comment_start_pos = None
 
-  for position, char in enumerate(goCode):
-    if state == DEFAULT:
+  quote = None
+  position = 0
+
+  for position, char in enumerate(code):
+
+    if state == WAITING_FOR_COMMENT:
       # Waiting for comment start character or beginning of
-      # string or rune literal.
+      # string.
       if char == '/':
-        state = AFTER_SLASH
-      elif char in ('"', "'", '`'):
-        string_char = char
+        state = FOUND_SLASH
+      elif char in ('"', "'"):
+        quote = char
         state = IN_STRING
-    elif state == AFTER_SLASH:
+    elif state == FOUND_SLASH:
       # Found comment start character, classify next character and
       # determine if single or multi-line comment.
       if char == '/':
         state = IN_SINGLE_LINE_COMMENT
-        comment_start_pos = position-1
+        comment_start_pos = position - 1  # we are at second char of "//"
       elif char == '*':
-        comment_start = line_counter
         state = IN_MULTI_LINE_COMMENT
-        comment_start_pos = position-1
+        comment_start_pos = position - 1  # we are at second char of "/*"
       else:
-        state = DEFAULT
+        state = WAITING_FOR_COMMENT
     elif state == IN_SINGLE_LINE_COMMENT:
-      # In single-line comment, read characters util EOL.
+      # In single-line comment, read characters until EOL.
       if char == '\n':
-        yield Comment(current_comment, comment_start_pos, position+1, False)
-        current_comment = ''
-        state = 0
+        yield common.Comment(
+          text=current_comment_text,
+          start=comment_start_pos,
+          end=position+1,
+          multiline=False)
+        current_comment_text = ''
+        state = WAITING_FOR_COMMENT
       else:
-        current_comment += char
+        current_comment_text += char
     elif state == IN_MULTI_LINE_COMMENT:
       # In multi-line comment, add characters until '*' is
       # encountered.
       if char == '*':
         state = IN_MULTI_LINE_COMMENT_ASTERISK
       else:
-        current_comment += char
+        current_comment_text += char
     elif state == IN_MULTI_LINE_COMMENT_ASTERISK:
       # In multi-line comment with asterisk found. Determine if
       # comment is ending.
       if char == '/':
-        yield Comment(current_comment, comment_start_pos, position+1, True)
-        current_comment = ''
-        state = DEFAULT
+        yield Comment(
+          text=current_comment_text,
+          start=comment_start_pos,
+          end=position+1,
+          multiline=True)
+        current_comment_text = ''
+        state = WAITING_FOR_COMMENT
       else:
-        current_comment += '*'
+        current_comment_text += '*'
         # Care for multiple '*' in a row
         if char != '*':
-          current_comment += char
+          current_comment_text += char
           state = IN_MULTI_LINE_COMMENT
     elif state == IN_STRING:
       # In string literal, expect literal end or escape character.
-      if char == string_char:
-        state = DEFAULT
+      if char == quote:
+        state = WAITING_FOR_COMMENT
       elif char == '\\':
-        state = IN_STRING_ESCAPING
-    elif state == IN_STRING_ESCAPING:
-      # In string literal, escaping current char.
+        state = IN_STRING_ESCAPE_NEXT_CHAR
+    elif state == IN_STRING_ESCAPE_NEXT_CHAR:
       state = IN_STRING
     if char == '\n':
-      line_counter += 1
+      pass
 
-  # EOF
-
+  # end of file
   if state in (IN_MULTI_LINE_COMMENT, IN_MULTI_LINE_COMMENT_ASTERISK):
     raise common.UnterminatedCommentError()
+
   if state == IN_SINGLE_LINE_COMMENT:
-    # was in single-line comment
-    yield Comment(current_comment, comment_start_pos, position+1, False)
+    yield common.Comment(
+      text=current_comment_text,
+      start=comment_start_pos,
+      end=position+1,
+      multiline=False)
+

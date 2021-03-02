@@ -4,9 +4,9 @@
 
 import io
 import tokenize
-from typing import NamedTuple, Iterable, List
+from typing import NamedTuple, Iterable
 
-from comment_parser.parsers.common import Comment
+from comment_parser.common import Comment
 
 
 class PosToken(NamedTuple):

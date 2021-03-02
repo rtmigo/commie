@@ -4,8 +4,8 @@
 
 
 import unittest
-from comment_parser.parsers import common, ruby_parser
-from comment_parser.parsers.common import Comment
+from comment_parser import ruby_parser
+from comment_parser.common import Comment
 
 
 class ShellParserTest(unittest.TestCase):

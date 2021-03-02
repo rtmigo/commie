@@ -5,8 +5,8 @@
 import re
 from typing import Iterable
 
-from comment_parser.parsers import common
-from comment_parser.parsers.common import Comment
+from comment_parser import common
+from comment_parser.common import Comment
 
 
 def extract_comments(rubyCode: str) -> Iterable[Comment]:

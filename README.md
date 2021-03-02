@@ -66,8 +66,6 @@ for comment in commie.iter_comments(source_code, filename):
 --------------------------------------------------------
 
 Forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser) 
-<details>
-  <summary markdown="span">Why?</summary>
   
 | **comment_parser** in 2021 | **commie** |
 |--------------------|------------|
@@ -75,5 +73,4 @@ Forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser)
 |Returns only the text of a comment|Respects markup as well, making it possible to remove or replace the entire comment|
 |Depends on [python-magic](https://pypi.org/project/python-magic) requiring an optional installation of binaries|Does not have this dependency|
 
-</details>
 

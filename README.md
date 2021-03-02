@@ -6,9 +6,10 @@
 
 A fork from [comment_parser](https://github.com/jeanralphaviles/comment_parser). 
 Differences from the original:
-- **comment_parser** returned only a line number, **commie** returns exact positions where the comment
-starts and ends (just like regular string search)
-- **comment_parser** returned only the text of a comment, but **commie** respects markup as well, 
-making it possible to remove or replace the comment   
-- **comment_parser** depends on [python-magic](https://pypi.org/project/python-magic) requiring 
-an optional installation of binaries. `commie` removes this dependency 
+
+| **comment_parser** | **commie** |
+|--------------------|------------|
+|returned only a line number|returns exact positions where the comment starts and ends (just like regular string search)|
+|returned only the text of a comment|respects markup as well, making it possible to remove or replace the comment|
+|depends on [python-magic](https://pypi.org/project/python-magic) requiring an optional installation of binaries|does not have this dependency|
+

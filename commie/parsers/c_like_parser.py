@@ -2,9 +2,16 @@
 # SPDX-FileCopyrightText: Copyright (c) 2015 Jean-Ralph Aviles
 # SPDX-License-Identifier: BSD-3-Clause
 
-# AG 2021: This was named js_parser.py in comment_parser@pypi.
-# But not it is used for parsing C code as well.
+# AG 2021: in pypi/comment_parser this module was only for parsing JavaScript.
+# But in fact, it coped better with parsing C than regex-based c_parser.py.
+# So for now it is the default parsed for all C-like languages.
+#
+# The most evident difference between JS and C in that single quotes can
+# contain a string in JS, but in C and C++ they are only for single chars.
+# However, for the task, individual characters within single quotes are
+# hardly different from single-letter strings.
 
+from enum import IntEnum, auto
 from typing import Iterable, Optional
 
 from commie.parsers import common
@@ -24,100 +31,101 @@ def extract_comments(source: str) -> Iterable[Comment]:
 	source code.
 	"""
 
-	WAITING_FOR_COMMENT = 0
-	IN_SINGLE_LINE_COMMENT = 2
-	IN_MULTI_LINE_COMMENT = 3
-	IN_MULTI_LINE_COMMENT_ASTERISK = 4
-	IN_STRING = 5
-	IN_STRING_ESCAPE_NEXT_CHAR = 6
-	FOUND_SLASH = 1
+	class State(IntEnum):
 
-	state:int = WAITING_FOR_COMMENT
+		DEFAULT = auto()
+		IN_SINGLE_LINE_COMMENT = auto()
+		IN_MULTI_LINE_COMMENT = auto()
+		IN_MULTI_LINE_COMMENT_AFTER_ASTERISK = auto()
+		IN_STRING = auto()
+		IN_STRING_AFTER_BACKSLASH = auto()
+		FOUND_SLASH = auto()
+
+	state: State = State.DEFAULT
 
 	markup_start_pos = None
 	text_start_pos: Optional[int] = 0
-	text_length: Optional[int] = 0
+	# text_length: Optional[int] = 0
 
 	quote = None
 	position = 0
 
 	for position, char in enumerate(source):
 
-		if state == WAITING_FOR_COMMENT:
-			# Waiting for comment start character or beginning of
-			# string.
+		if state == State.DEFAULT:
+			# waiting for comment start character or beginning of a string
 			if char == '/':
-				state = FOUND_SLASH
+				state = State.FOUND_SLASH
 			elif char in ('"', "'"):
 				quote = char
-				state = IN_STRING
-		elif state == FOUND_SLASH:
-			# Found comment start character, classify next character and
+				state = State.IN_STRING
+		elif state == State.FOUND_SLASH:
+			# found comment start character, classify next character and
 			# determine if single or multi-line comment.
 			if char == '/':
-				state = IN_SINGLE_LINE_COMMENT
+				state = State.IN_SINGLE_LINE_COMMENT
 				markup_start_pos = position - 1  # we are at second char of "//"
 				text_start_pos = position + 1
 			elif char == '*':
-				state = IN_MULTI_LINE_COMMENT
+				state = State.IN_MULTI_LINE_COMMENT
 				markup_start_pos = position - 1  # we are at second char of "/*"
 				text_start_pos = position + 1
 			else:
-				state = WAITING_FOR_COMMENT
-		elif state == IN_SINGLE_LINE_COMMENT:
-			# In single-line comment, read characters until EOL.
+				state = State.DEFAULT
+		elif state == State.IN_SINGLE_LINE_COMMENT:
+			# in single-line comment, reading characters until EOL
 			if char == '\n':
 				yield common.Comment(
 					source,
-					text_span=Span(text_start_pos, text_start_pos + text_length),
+					text_span=Span(text_start_pos, position),
 					code_span=Span(markup_start_pos, position),
 					multiline=False)
 				text_length = 0
-				state = WAITING_FOR_COMMENT
-			else:
-				text_length += 1
-		elif state == IN_MULTI_LINE_COMMENT:
-			# In multi-line comment, add characters until '*' is
+				state = State.DEFAULT
+		# else:
+		#	text_length += 1
+		elif state == State.IN_MULTI_LINE_COMMENT:
+			# in multi-line comment, add characters until '*' is
 			# encountered.
 			if char == '*':
-				state = IN_MULTI_LINE_COMMENT_ASTERISK
-			else:
-				text_length += 1
-		elif state == IN_MULTI_LINE_COMMENT_ASTERISK:
+				state = State.IN_MULTI_LINE_COMMENT_AFTER_ASTERISK
+		# else:
+		# text_length += 1
+		elif state == State.IN_MULTI_LINE_COMMENT_AFTER_ASTERISK:
 			# In multi-line comment with asterisk found. Determine if
 			# comment is ending.
 			if char == '/':
 				yield Comment(
 					source,
-					text_span=Span(text_start_pos, text_start_pos + text_length),
+					text_span=Span(text_start_pos, position - 1),
 					code_span=Span(markup_start_pos, position + 1),
 					multiline=True)
 				text_length = 0
-				state = WAITING_FOR_COMMENT
+				state = State.DEFAULT
 			else:
-				text_length += 1
-				# Care for multiple '*' in a row
+				# text_length += 1
+				# care for multiple '*' in a row
 				if char != '*':
-					text_length += 1
-					state = IN_MULTI_LINE_COMMENT
-		elif state == IN_STRING:
-			# In string literal, expect literal end or escape character.
+					# text_length += 1
+					state = State.IN_MULTI_LINE_COMMENT
+		elif state == State.IN_STRING:
+			# in string literal, expect literal end or escape character.
 			if char == quote:
-				state = WAITING_FOR_COMMENT
+				state = State.DEFAULT
 			elif char == '\\':
-				state = IN_STRING_ESCAPE_NEXT_CHAR
-		elif state == IN_STRING_ESCAPE_NEXT_CHAR:
-			state = IN_STRING
-		if char == '\n':
-			pass
+				state = State.IN_STRING_AFTER_BACKSLASH
+		elif state == State.IN_STRING_AFTER_BACKSLASH:
+			state = State.IN_STRING
+	# if char == '\n':
+	# 	pass
 
 	# end of file
-	if state in (IN_MULTI_LINE_COMMENT, IN_MULTI_LINE_COMMENT_ASTERISK):
+	if state in (State.IN_MULTI_LINE_COMMENT, State.IN_MULTI_LINE_COMMENT_AFTER_ASTERISK):
 		raise common.UnterminatedCommentError()
 
-	if state == IN_SINGLE_LINE_COMMENT:
+	if state == State.IN_SINGLE_LINE_COMMENT:
 		yield common.Comment(
 			source,
-			text_span=Span(text_start_pos, text_start_pos + text_length),
+			text_span=Span(text_start_pos, position + 1),
 			code_span=Span(markup_start_pos, position + 1),
 			multiline=False)

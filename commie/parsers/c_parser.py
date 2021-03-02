@@ -20,46 +20,46 @@ from commie.parsers.common import Comment
 from commie.parsers.helper import matchGroupToComment
 
 
-def extract_comments(code:str) -> Iterable[Comment]:
-  """Extracts a list of comments from the given C family source code.
+def extract_comments(code: str) -> Iterable[Comment]:
+	"""Extracts a list of comments from the given C family source code.
 
-  Comments are represented with the Comment class found in the common module.
-  C family comments come in two forms, single and multi-line comments.
-    - Single-line comments begin with '//' and continue to the end of line.
-    - Multi-line comments begin with '/*' and end with '*/' and can span
-      multiple lines of code. If a multi-line comment does not terminate
-      before EOF is reached, then an exception is raised.
+	Comments are represented with the Comment class found in the common module.
+	C family comments come in two forms, single and multi-line comments.
+	  - Single-line comments begin with '//' and continue to the end of line.
+	  - Multi-line comments begin with '/*' and end with '*/' and can span
+		multiple lines of code. If a multi-line comment does not terminate
+		before EOF is reached, then an exception is raised.
 
-  Note that this doesn't take language-specific preprocessor directives into
-  consideration.
+	Note that this doesn't take language-specific preprocessor directives into
+	consideration.
 
-  Args:
-    code: String containing code to extract comments from.
-  Returns:
-    Python list of common.Comment in the order that they appear in the code.
-  Raises:
-    common.UnterminatedCommentError: Encountered an unterminated multi-line
-      comment.
-  """
-  pattern = r"""
+	Args:
+	  code: String containing code to extract comments from.
+	Returns:
+	  Python list of common.Comment in the order that they appear in the code.
+	Raises:
+	  common.UnterminatedCommentError: Encountered an unterminated multi-line
+		comment.
+	"""
+	pattern = r"""
     (?P<literal> (\"([^\"\n])*\")+) |
     (?P<single> //(?P<single_content>.*)?$) |
     (?P<multi> /\*(?P<multi_content>(.|\n)*?)?\*/) |
     (?P<error> /\*(.*)?)
   """
 
-  compiled = re.compile(pattern, re.VERBOSE | re.MULTILINE)
+	compiled = re.compile(pattern, re.VERBOSE | re.MULTILINE)
 
-  for match in compiled.finditer(code):
+	for match in compiled.finditer(code):
 
-    kind = match.lastgroup
-    #markupSpan = match.span(0)
+		kind = match.lastgroup
+		# markupSpan = match.span(0)
 
-    if kind == "single":
-      yield matchGroupToComment(match, "single_content", False)
+		if kind == "single":
+			yield matchGroupToComment(match, "single_content", False)
 
-    elif kind == "multi":
-      yield matchGroupToComment(match, "multi_content", True)
+		elif kind == "multi":
+			yield matchGroupToComment(match, "multi_content", True)
 
-    elif kind == "error":
-      raise common.UnterminatedCommentError()
+		elif kind == "error":
+			raise common.UnterminatedCommentError()

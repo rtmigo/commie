@@ -8,44 +8,44 @@ from commie import iter_comments_sass
 from ..parsers.common import Comment
 
 
-def commentsToList(code:str) -> List[Comment]:
-  return list(iter_comments_sass(code))
+def commentsToList(code: str) -> List[Comment]:
+	return list(iter_comments_sass(code))
 
 
 class SassParserTest(unittest.TestCase):
 
-  def testSimpleMain(self):
-    code = ".cssClass { /* i am\n a comment! */ }"
-    comments = commentsToList(code)
+	def testSimpleMain(self):
+		code = ".cssClass { /* i am\n a comment! */ }"
+		comments = commentsToList(code)
 
-    self.assertEqual(len(comments), 1)
+		self.assertEqual(len(comments), 1)
 
-    self.assertEqual(comments[0].code_span.extract(code), "/* i am\n a comment! */")
-    self.assertEqual(comments[0].text_span.extract(code), " i am\n a comment! ")
-    self.assertEqual(comments[0].multiline, True)
+		self.assertEqual(comments[0].code_span.extract(code), "/* i am\n a comment! */")
+		self.assertEqual(comments[0].text_span.extract(code), " i am\n a comment! ")
+		self.assertEqual(comments[0].multiline, True)
 
-  def testIncLeft(self):
-    code = ".cssClass { /* /* i am a comment! */ }"
-    comments = commentsToList(code)
+	def testIncLeft(self):
+		code = ".cssClass { /* /* i am a comment! */ }"
+		comments = commentsToList(code)
 
-    self.assertEqual(len(comments), 1)
+		self.assertEqual(len(comments), 1)
 
-    self.assertEqual(comments[0].code_span.extract(code), "/* /* i am a comment! */")
-    self.assertEqual(comments[0].text_span.extract(code), " /* i am a comment! ")
-    self.assertEqual(comments[0].multiline, True)
+		self.assertEqual(comments[0].code_span.extract(code), "/* /* i am a comment! */")
+		self.assertEqual(comments[0].text_span.extract(code), " /* i am a comment! ")
+		self.assertEqual(comments[0].multiline, True)
 
-  def testIncRight(self):
-    code = ".cssClass { /* i am a comment! */ */ }"
-    comments = commentsToList(code)
+	def testIncRight(self):
+		code = ".cssClass { /* i am a comment! */ */ }"
+		comments = commentsToList(code)
 
-    self.assertEqual(len(comments), 1)
+		self.assertEqual(len(comments), 1)
 
-    self.assertEqual(comments[0].code_span.extract(code), "/* i am a comment! */")
-    self.assertEqual(comments[0].text_span.extract(code), " i am a comment! ")
-    self.assertEqual(comments[0].multiline, True)
+		self.assertEqual(comments[0].code_span.extract(code), "/* i am a comment! */")
+		self.assertEqual(comments[0].text_span.extract(code), " i am a comment! ")
+		self.assertEqual(comments[0].multiline, True)
 
-  def testThreeComments(self):
-    code = """
+	def testThreeComments(self):
+		code = """
     
 /* Welcome to Compass.
  * In this file you should write your main styles. (or centralize your imports)
@@ -75,9 +75,9 @@ $border-radius: 4px;
 @import "basics";
     
     """
-    comments = commentsToList(code)
+		comments = commentsToList(code)
 
-    self.assertEqual(len(comments), 2)
+		self.assertEqual(len(comments), 2)
 
-    self.assertEqual(len(comments[0].code_span.extract(code).splitlines()), 4)
-    self.assertEqual(len(comments[1].code_span.extract(code).splitlines()), 1)
+		self.assertEqual(len(comments[0].code_span.extract(code).splitlines()), 4)
+		self.assertEqual(len(comments[1].code_span.extract(code).splitlines()), 1)

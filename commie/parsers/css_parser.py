@@ -9,19 +9,18 @@ from commie.parsers.common import Comment
 from commie.parsers.helper import matchGroupToComment
 
 
-def extract_comments(cssCode:str) -> Iterable[Comment]:
-
-  pattern = r"""
+def extract_comments(cssCode: str) -> Iterable[Comment]:
+	pattern = r"""
     (?P<comment> /\*(?P<content>(.|\n)*?)?\*/) |
     (?P<error> /\*(.*)?)
   """
 
-  for match in re.finditer(pattern, cssCode, flags=re.VERBOSE | re.MULTILINE):
+	for match in re.finditer(pattern, cssCode, flags=re.VERBOSE | re.MULTILINE):
 
-    kind = match.lastgroup
+		kind = match.lastgroup
 
-    if kind == "comment":
-      yield matchGroupToComment(match, "content", True)
+		if kind == "comment":
+			yield matchGroupToComment(match, "content", True)
 
-    elif kind == "error":
-      raise common.UnterminatedCommentError()
+		elif kind == "error":
+			raise common.UnterminatedCommentError()

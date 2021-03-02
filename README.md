@@ -41,7 +41,6 @@ for comment in commie.iter_comments_go(sourceCode):
 
 
 # Forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser) 
-Motivation:
 
 | **comment_parser** | **commie** |
 |--------------------|------------|

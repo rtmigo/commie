@@ -66,6 +66,7 @@ for comment in commie.iter_comments(source_code, filename):
 ### Forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser)
 <details>
   <summary markdown="span">Motivation</summary>
+  
 | **comment_parser** | **commie** |
 |--------------------|------------|
 |Returns only a line number|Returns positions where the comment starts and ends. Just like regular string search|

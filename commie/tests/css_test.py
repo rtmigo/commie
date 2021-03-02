@@ -1,5 +1,4 @@
 # SPDX-FileCopyrightText: Copyright (c) 2021 Art Galkin <ortemeo@gmail.com>
-# SPDX-FileCopyrightText: Copyright (c) 2015 Jean-Ralph Aviles
 # SPDX-License-Identifier: MIT
 
 import unittest

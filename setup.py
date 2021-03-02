@@ -1,32 +1,43 @@
-# TODO update
+from setuptools import setup, find_packages
+from pathlib import Path
 
+setup(
+	name="commie",
+	version="0.0.1",
 
-# from setuptools import setup
-#
-#
-# def readme():
-#   with open('README.md') as readme_file:
-#     return readme_file.read()
-#
-#
-# setup(
-#     name='comment_parser',
-#     version='1.2.3',
-#     description='Parse comments from various source files.',
-#     classifiers=[
-#         'Development Status :: 5 - Production/Stable',
-#         'Programming Language :: Python :: 3',
-#         'Topic :: Software Development :: Documentation',
-#         'License :: OSI Approved :: MIT License'
-#     ],
-#     url='http://github.com/jeanralphaviles/comment_parser',
-#     author='Jean-Ralph Aviles',
-#     author_email='jeanralph.aviles+pypi@gmail.com',
-#     license='MIT',
-#     long_description=readme(),
-#     long_description_content_type='text/markdown',
-#     packages=['comment_parser', 'comment_parser.parsers'],
-#     install_requires=['python-magic==0.4.18'],
-#     test_suite='nose.collector',
-#     tests_require=['nose'],
-#     zip_safe=False)
+	author="Art Galkin",
+	author_email="ortemeo@gmail.com",
+	url='https://github.com/rtmigo/commie.python',
+
+	packages=find_packages(),
+	install_requires=[],
+
+	description="Finds comments in source code in different programming languages",
+
+	long_description=(Path(__file__).parent/'README.md').read_text(),
+	long_description_content_type='text/markdown',
+
+  license='MIT',
+
+	# entry_points={
+  #       'console_scripts': [
+  #           'allrights = allrights:main',
+  #       ]},
+
+	keywords=['comments', 'source code'],
+
+	# https://pypi.org/classifiers/
+	classifiers= [
+		"Development Status :: 2 - Pre-Alpha",
+		"Intended Audience :: Developers",
+		'License :: OSI Approved :: MIT License',
+    'Topic :: Software Development :: Documentation',
+		"Programming Language :: Python :: 3.7",
+		"Programming Language :: Python :: 3.8",
+		"Programming Language :: Python :: 3.9",
+	],
+
+  test_suite='nose.collector',
+  tests_require=['nose'],
+  zip_safe=False
+)

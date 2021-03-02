@@ -81,5 +81,12 @@ def iter_comments_file(file: Path) -> Iterable[Comment]:
 def iter_comments(codeOrFile:Union[Path,str], filename:str=None) -> Iterable[Comment]:
 
 	if isinstance(codeOrFile, str):
+		if filename is None:
+			raise ValueError("Please specify filename")
 		return iter_comments_str(codeOrFile, filename)
 	return iter_comments_file(codeOrFile)
+
+class TestIterComments(unittest.TestCase):
+	def testNoFilename(self):
+		with self.assertRaises(ValueError):
+			list(iter_comments("..."))

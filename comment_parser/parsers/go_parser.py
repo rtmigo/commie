@@ -1,10 +1,14 @@
-#!/usr/bin/python
-"""This module provides methods for parsing comments from Go source code."""
+# SPDX-FileCopyrightText: Copyright (c) 2021 Art Galkin <ortemeo@gmail.com>
+# SPDX-FileCopyrightText: Copyright (c) 2015 Jean-Ralph Aviles
+# SPDX-License-Identifier: MIT
+
+from typing import Iterable
 
 from comment_parser.parsers import common
+from comment_parser.parsers.common import Comment
 
 
-def extract_comments(code):
+def extract_comments(goCode: str) -> Iterable[Comment]:
   """Extracts a list of comments from the given Go source code.
 
   Comments are represented with the Comment class found in the common module.
@@ -19,85 +23,96 @@ def extract_comments(code):
   https://golang.org/ref/spec#Comments
 
   Args:
-    code: String containing code to extract comments from.
+    goCode: String containing code to extract comments from.
   Returns:
     Python list of common.Comment in the order that they appear in the code.
   Raises:
     common.UnterminatedCommentError: Encountered an unterminated multi-line
       comment.
   """
-  state = 0
+
+  DEFAULT = 0
+  AFTER_SLASH = 1
+  IN_SINGLE_LINE_COMMENT = 2
+  IN_MULTI_LINE_COMMENT = 3
+  IN_MULTI_LINE_COMMENT_ASTERISK = 4
+  IN_STRING = 5
+  IN_STRING_ESCAPING = 6
+
+  state = DEFAULT
   current_comment = ''
-  comments = []
+
   line_counter = 1
-  comment_start = 1
   string_char = ''
-  for char in code:
-    if state == 0:
+
+  position = -1
+  comment_start_pos = None
+
+  for position, char in enumerate(goCode):
+    if state == DEFAULT:
       # Waiting for comment start character or beginning of
       # string or rune literal.
       if char == '/':
-        state = 1
+        state = AFTER_SLASH
       elif char in ('"', "'", '`'):
         string_char = char
-        state = 5
-    elif state == 1:
+        state = IN_STRING
+    elif state == AFTER_SLASH:
       # Found comment start character, classify next character and
       # determine if single or multi-line comment.
       if char == '/':
-        state = 2
+        state = IN_SINGLE_LINE_COMMENT
+        comment_start_pos = position
       elif char == '*':
         comment_start = line_counter
-        state = 3
+        state = IN_MULTI_LINE_COMMENT
+        comment_start_pos = position
       else:
-        state = 0
-    elif state == 2:
+        state = DEFAULT
+    elif state == IN_SINGLE_LINE_COMMENT:
       # In single-line comment, read characters util EOL.
       if char == '\n':
-        comment = common.Comment(current_comment, line_counter)
-        comments.append(comment)
+        yield Comment(current_comment, comment_start_pos, position, False)
         current_comment = ''
         state = 0
       else:
         current_comment += char
-    elif state == 3:
+    elif state == IN_MULTI_LINE_COMMENT:
       # In multi-line comment, add characters until '*' is
       # encountered.
       if char == '*':
-        state = 4
+        state = IN_MULTI_LINE_COMMENT_ASTERISK
       else:
         current_comment += char
-    elif state == 4:
+    elif state == IN_MULTI_LINE_COMMENT_ASTERISK:
       # In multi-line comment with asterisk found. Determine if
       # comment is ending.
       if char == '/':
-        comment = common.Comment(current_comment, comment_start, multiline=True)
-        comments.append(comment)
+        yield Comment(current_comment, comment_start_pos, position, True)
         current_comment = ''
-        state = 0
+        state = DEFAULT
       else:
         current_comment += '*'
         # Care for multiple '*' in a row
         if char != '*':
           current_comment += char
-          state = 3
-    elif state == 5:
+          state = IN_MULTI_LINE_COMMENT
+    elif state == IN_STRING:
       # In string literal, expect literal end or escape character.
       if char == string_char:
-        state = 0
+        state = DEFAULT
       elif char == '\\':
-        state = 6
-    elif state == 6:
+        state = IN_STRING_ESCAPING
+    elif state == IN_STRING_ESCAPING:
       # In string literal, escaping current char.
-      state = 5
+      state = IN_STRING
     if char == '\n':
       line_counter += 1
 
-  # EOF.
-  if state in (3, 4):
+  # EOF
+
+  if state in (IN_MULTI_LINE_COMMENT, IN_MULTI_LINE_COMMENT_ASTERISK):
     raise common.UnterminatedCommentError()
-  if state == 2:
-    # Was in single-line comment. Create comment.
-    comment = common.Comment(current_comment, line_counter)
-    comments.append(comment)
-  return comments
+  if state == IN_SINGLE_LINE_COMMENT:
+    # was in single-line comment
+    yield Comment(current_comment, comment_start_pos, position, False)

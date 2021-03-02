@@ -1,4 +1,4 @@
-# [rtmigo / commie.python](https://github.com/rtmigo/commie.python/)
+# [commie](https://github.com/rtmigo/commie.python/)
 [![Actions Status](https://github.com/rtmigo/commie.python/workflows/CI/badge.svg?branch=master)](https://github.com/rtmigo/commie.python/actions)
 [![PyPI status](https://img.shields.io/pypi/status/commie.svg)](https://pypi.python.org/pypi/commie/)
 [![PyPI version shields.io](https://img.shields.io/pypi/v/commie.svg)](https://pypi.python.org/pypi/commie/)

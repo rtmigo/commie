@@ -3,8 +3,8 @@
 # SPDX-License-Identifier: MIT
 
 import unittest
-from comment_parser import js_parser, common
-from comment_parser.common import Comment
+from commie import js_parser, common
+from commie.common import Comment
 
 
 class JsParserTest(unittest.TestCase):

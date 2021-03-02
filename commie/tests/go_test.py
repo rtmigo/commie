@@ -4,8 +4,8 @@
 
 import unittest
 
-from comment_parser import go_parser, common
-from comment_parser.common import Comment
+from commie import go_parser, common
+from commie.common import Comment
 
 
 class GoParserTest(unittest.TestCase):

@@ -6,7 +6,7 @@ import io
 import tokenize
 from typing import NamedTuple, Iterable
 
-from comment_parser.common import Comment
+from commie.common import Comment
 
 
 class PosToken(NamedTuple):

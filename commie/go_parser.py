@@ -4,8 +4,8 @@
 
 from typing import Iterable
 
-from comment_parser import common
-from comment_parser.common import Comment
+from commie import common
+from commie.common import Comment
 
 
 def extract_comments(goCode: str) -> Iterable[Comment]:

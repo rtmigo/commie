@@ -4,8 +4,8 @@
 
 import unittest
 
-from comment_parser import common, c_parser
-from comment_parser.common import Comment
+from commie import common, c_parser
+from commie.common import Comment
 
 
 class CParserTest(unittest.TestCase):

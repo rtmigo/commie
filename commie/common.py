@@ -19,7 +19,7 @@ class Span(NamedTuple):
   start:int
   end:int
 
-  def substring(self, text:str):
+  def extract(self, text:str):
     return text[self.start:self.end]
 
 

@@ -15,8 +15,8 @@ class JsParserTest(unittest.TestCase):
 
     self.assertEqual(len(comments), 1)
 
-    self.assertEqual(comments[0].markup_span.substring(code), "// single line comment")
-    self.assertEqual(comments[0].text_span.substring(code), " single line comment")
+    self.assertEqual(comments[0].markup_span.extract(code), "// single line comment")
+    self.assertEqual(comments[0].text_span.extract(code), " single line comment")
     self.assertEqual(comments[0].multiline, False)
 
   def testLineCommentInSingleQuotedLiteral(self):
@@ -34,8 +34,8 @@ class JsParserTest(unittest.TestCase):
     comments = list(js_parser.extract_comments(code))
 
     self.assertEqual(len(comments), 1)
-    self.assertEqual(comments[0].markup_span.substring(code), '/* multiline\ncomment */')
-    self.assertEqual(comments[0].text_span.substring(code), " multiline\ncomment ")
+    self.assertEqual(comments[0].markup_span.extract(code), '/* multiline\ncomment */')
+    self.assertEqual(comments[0].text_span.extract(code), " multiline\ncomment ")
     self.assertEqual(comments[0].multiline, True)
 
 
@@ -44,8 +44,8 @@ class JsParserTest(unittest.TestCase):
     comments = list(js_parser.extract_comments(code))
 
     self.assertEqual(len(comments), 1)
-    self.assertEqual(comments[0].markup_span.substring(code), '/***************/')
-    self.assertEqual(comments[0].text_span.substring(code), "*************")
+    self.assertEqual(comments[0].markup_span.extract(code), '/***************/')
+    self.assertEqual(comments[0].text_span.extract(code), "*************")
     self.assertEqual(comments[0].multiline, True)
 
   def testMultiLineCommentInSingleLiteral(self):

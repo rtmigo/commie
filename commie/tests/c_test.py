@@ -5,23 +5,29 @@
 import unittest
 
 from commie import common, c_parser
-from commie.common import Comment
 
 
-@unittest.skip
 class CParserTest(unittest.TestCase):
 
   def testSimpleMain(self):
     code = "// this is a comment\nint main() {\nreturn 0;\n}\n"
     comments = list(c_parser.extract_comments(code))
-    expected = [Comment(" this is a comment", 0, 20, False)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.extract(code), "// this is a comment")
+    self.assertEqual(comments[0].text_span.extract(code), " this is a comment")
+    self.assertEqual(comments[0].multiline, False)
 
   def testSingleLineComment(self):
     code = '// single line comment'
     comments = list(c_parser.extract_comments(code))
-    expected = [Comment(" single line comment", 0, 22, False)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.extract(code), '// single line comment')
+    self.assertEqual(comments[0].text_span.extract(code), " single line comment")
+    self.assertEqual(comments[0].multiline, False)
 
   def testSingleLineCommentInStringLiteral(self):
     code = 'char* msg = "// this is not a comment"'
@@ -31,14 +37,22 @@ class CParserTest(unittest.TestCase):
   def testMultiLineComment(self):
     code = '/* multiline\ncomment */'
     comments = list(c_parser.extract_comments(code))
-    expected = [Comment(" multiline\ncomment ", 0, 23, True)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.extract(code), '/* multiline\ncomment */')
+    self.assertEqual(comments[0].text_span.extract(code), " multiline\ncomment ")
+    self.assertEqual(comments[0].multiline, True)
 
   def testMultiLineCommentWithStars(self):
     code = "/***************/"
     comments = list(c_parser.extract_comments(code))
-    expected = [Comment("*************", 0, 17, True)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.extract(code), '/***************/')
+    self.assertEqual(comments[0].text_span.extract(code), "*************")
+    self.assertEqual(comments[0].multiline, True)
 
   def testMultiLineCommentInStringLiteral(self):
     code = 'char* msg = "/* This is not a\\nmultiline comment */"'
@@ -53,14 +67,28 @@ class CParserTest(unittest.TestCase):
   def testMultipleMultilineComments(self):
     code = '/* abc */ /* 123 */'
     comments = list(c_parser.extract_comments(code))
-    expected = [Comment(" abc ", 0, 9, True), Comment(" 123 ", 10, 19, True)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 2)
+
+    self.assertEqual(comments[0].markup_span.extract(code), '/* abc */')
+    self.assertEqual(comments[0].text_span.extract(code), " abc ")
+    self.assertEqual(comments[0].multiline, True)
+
+    self.assertEqual(comments[1].markup_span.extract(code), '/* 123 */')
+    self.assertEqual(comments[1].text_span.extract(code), " 123 ")
+    self.assertEqual(comments[1].multiline, True)
+
 
   def testStringThenComment(self):
     code = r'"" /* "abc */'
     comments = list(c_parser.extract_comments(code))
-    expected = [Comment(' "abc ', 3, 13, True)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.extract(code), '/* "abc */')
+    self.assertEqual(comments[0].text_span.extract(code), ' "abc ')
+    self.assertEqual(comments[0].multiline, True)
+
 
   def testCommentStartInsideEscapedQuotesInStringLiteral(self):
     # TODO(#27): Re-enable test.
@@ -68,6 +96,7 @@ class CParserTest(unittest.TestCase):
     # comments = c_parser.extract_comments(code)
     # self.assertEqual(comments, [])
     pass
+
 
   def testStringEscapedBackslashCharacter(self):
     code = r'"\\"'
@@ -77,7 +106,12 @@ class CParserTest(unittest.TestCase):
   def testTwoStringsFollowedByComment(self):
     code = r'"""" // foo'
     comments = list(c_parser.extract_comments(code))
-    self.assertEqual(comments, [Comment(" foo", 5, 11, False)])
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.extract(code), '// foo')
+    self.assertEqual(comments[0].text_span.extract(code), " foo")
+    self.assertEqual(comments[0].multiline, False)
 
   def testCommentedMultilineComment(self):
     code = '''// What if i start a /* here
@@ -85,15 +119,30 @@ class CParserTest(unittest.TestCase):
     // and ended it here */'''
 
     comments = list(c_parser.extract_comments(code))
-    expected = [Comment(" What if i start a /* here", 0, 28, False),
-                Comment(" and ended it here */", 59, 82, False)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 2)
+
+    self.assertEqual(comments[0].markup_span.extract(code), '// What if i start a /* here')
+    self.assertEqual(comments[0].text_span.extract(code), " What if i start a /* here")
+    self.assertEqual(comments[0].multiline, False)
+
+    self.assertEqual(comments[1].markup_span.extract(code), '// and ended it here */')
+    self.assertEqual(comments[1].text_span.extract(code), " and ended it here */")
+    self.assertEqual(comments[1].multiline, False)
+
 
   def testMultilineCommentedComment(self):
     code = '''/*// here
     int main(){return 0;}
     */// and ended it here */'''
     comments = list(c_parser.extract_comments(code))
-    expected = [Comment("// here\n    int main(){return 0;}\n    ", 0, 42, True),
-                Comment(" and ended it here */", 42, 65, False)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 2)
+
+    self.assertEqual(comments[0].markup_span.extract(code), "/*// here\n    int main(){return 0;}\n    */")
+    self.assertEqual(comments[0].text_span.extract(code), "// here\n    int main(){return 0;}\n    ")
+    self.assertEqual(comments[0].multiline, True)
+
+    self.assertEqual(comments[1].markup_span.extract(code), '// and ended it here */')
+    self.assertEqual(comments[1].text_span.extract(code), " and ended it here */")
+    self.assertEqual(comments[1].multiline, False)

@@ -19,6 +19,7 @@ from typing import Iterable
 
 from commie import common
 from commie.common import Comment
+from commie.helper import matchGroupToComment
 
 
 def extract_comments(code:str) -> Iterable[Comment]:
@@ -54,18 +55,20 @@ def extract_comments(code:str) -> Iterable[Comment]:
   for match in compiled.finditer(code):
 
     kind = match.lastgroup
-    markupSpan = match.span(0)
+    #markupSpan = match.span(0)
 
     if kind == "single":
-      yield common.Comment(
-        match.group("single_content"),
-        markupSpan[0], markupSpan[1],
-        multiline=False)
+      yield matchGroupToComment(match, "single_content", False)
+      # yield common.Comment(
+      #   match.group("single_content"),
+      #   markupSpan[0], markupSpan[1],
+      #   multiline=False)
     elif kind == "multi":
-      yield common.Comment(
-        match.group("multi_content"),
-        markupSpan[0], markupSpan[1],
-        multiline=True)
+      yield matchGroupToComment(match, "multi_content", True)
+      # yield common.Comment(
+      #   match.group("multi_content"),
+      #   markupSpan[0], markupSpan[1],
+      #   multiline=True)
     elif kind == "error":
       raise common.UnterminatedCommentError()
   #

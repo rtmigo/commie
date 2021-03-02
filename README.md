@@ -64,9 +64,9 @@ for comment in commie.iter_comments(source_code, filename):
 ```
 
 <details>
-  <summary markdown="span">This is the summary text, click me to expand</summary>
+  <summary markdown="span"># Forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser)</summary>
 
-# Forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser) 
+ 
 
 | **comment_parser** | **commie** |
 |--------------------|------------|

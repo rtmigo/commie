@@ -1,4 +1,5 @@
-from .parsers.c_parser import extract_comments as iter_comments_c
+from .parsers.c_parser import extract_comments as iter_comments_c, \
+  extract_comments as iter_comments_sass
 from .parsers.common import Comment, Span, FileError, UnterminatedCommentError
 from .parsers.css_parser import extract_comments as iter_comments_css
 from .parsers.go_parser import extract_comments as iter_comments_go

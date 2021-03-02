@@ -1,17 +1,23 @@
-#!/usr/bin/python
+# SPDX-FileCopyrightText: Copyright (c) 2021 Art Galkin <ortemeo@gmail.com>
+# SPDX-FileCopyrightText: Copyright (c) 2015 Jean-Ralph Aviles
+# SPDX-License-Identifier: MIT
+
 """This module provides methods for parsing comments from HTML family languages.
 
 Works with:
   HTML
   XML
+  SGML
 """
 
 import re
-from bisect import bisect_left
+from typing import Iterable
+
 from comment_parser.parsers import common
+from comment_parser.parsers.common import Comment
 
 
-def extract_comments(code):
+def extract_comments(htmlCode: str) -> Iterable[Comment]:
   """Extracts a list of comments from the given HTML family source code.
 
   Comments are represented with the Comment class found in the common module.
@@ -19,7 +25,7 @@ def extract_comments(code):
   '-->' markers. Comments cannot be nested.
 
   Args:
-    code: String containing code to extract comments from.
+    htmlCode: String containing code to extract comments from.
   Returns:
     Python list of common.Comment in the order that they appear in the code..
   Raises:
@@ -34,26 +40,21 @@ def extract_comments(code):
   """
   compiled = re.compile(pattern, re.VERBOSE | re.MULTILINE)
 
-  lines_indexes = []
-  for match in re.finditer(r"$", code, re.M):
-    lines_indexes.append(match.start())
+  for match in compiled.finditer(htmlCode):
 
-  comments = []
-  for match in compiled.finditer(code):
     kind = match.lastgroup
-
-    start_character = match.start()
-    line_no = bisect_left(lines_indexes, start_character)
+    span = match.span(0)
 
     if kind == "single":
-      comment_content = match.group("single_content")
-      comment = common.Comment(comment_content, line_no + 1)
-      comments.append(comment)
+
+      yield common.Comment(
+        match.group("single_content"),
+        span[0], span[1],
+        multiline=False)
     elif kind == "multi":
-      comment_content = match.group("multi_content")
-      comment = common.Comment(comment_content, line_no + 1, multiline=True)
-      comments.append(comment)
+      yield common.Comment(
+        match.group("multi_content"),
+        span[0], span[1],
+        multiline=False)
     elif kind == "error":
       raise common.UnterminatedCommentError()
-
-  return comments

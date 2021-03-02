@@ -3,9 +3,10 @@
 
 import unittest
 from comment_parser.parsers import common
-from comment_parser.parsers import ruby_parser
+from comment_parser.parsers.not_working import ruby_parser
 
 
+@unittest.skip # todo
 class ShellParserTest(unittest.TestCase):
 
   def testComment(self):

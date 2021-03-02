@@ -1,4 +1,7 @@
 #!/usr/bin/python
+
+# AG: It seems to be the same as JS parser. I'll just leave it here for while
+
 """This module provides methods for parsing comments from C family languages.
 
 Works with:

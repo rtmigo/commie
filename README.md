@@ -29,7 +29,7 @@ for comment in commie.iter_comments_go(sourceCode):
 
 | **Method** | **Use for** |
 |--------------------|------------|
-| `commie.iter_comments_c`| C99+, C++, Objective-C, Java |
+| `commie.iter_comments_c`| C99+, C++, Objective-C, C#, Java |
 | `commie.iter_comments_js`| JavaScript, Dart |
 | `commie.iter_comments_go`|Go|
 | `commie.iter_comments_ruby` | Ruby |

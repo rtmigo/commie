@@ -5,9 +5,7 @@ import commie
 # in this example we'll parse a Go source file
 file = Path(__file__).parent / "data" / "multiply.go"
 
-sourceCode = file.read_text()
-
-for comment in commie.iter_comments(file.read_text(), file.name):
+for comment in commie.iter_comments(file):
 	# comment code: "/* sample */"
 	print("Comment code:", comment.code)
 	print("Comment code location:", comment.code_span.start, comment.code_span.end)

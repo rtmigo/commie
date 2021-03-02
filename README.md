@@ -7,6 +7,8 @@
 
 Native Python package for extracting source code comments in different programming languages.
 
+See [supported languages](#Find-comments-in-a-string) list
+
 # Install
 
 ```sh
@@ -20,7 +22,7 @@ $ pip3 install commie
 from pathlib import Path
 import commie
 
-for comment in commie.iter_comments_file(Path("/path/to/source.cpp")):
+for comment in commie.iter_comments(Path("/path/to/source.cpp")):
 
   # something like "/* sample */"
   print("Comment code:", comment.code)
@@ -67,7 +69,7 @@ import commie
 filename:str = "/path/to/mycode.go"
 source_code:str = Path(filename).read_text()
 
-for comment in commie.iter_comments(source_code, filename):
+for comment in commie.iter_comments(source_code, filename=filename):
   # ... process comment ...
   pass
 ```

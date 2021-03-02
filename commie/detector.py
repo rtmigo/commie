@@ -3,7 +3,7 @@
 
 import unittest
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, Union
 
 from .parsers.c_parser import extract_comments as iter_comments_c, \
 	extract_comments as iter_comments_sass
@@ -70,10 +70,16 @@ class TestPickFunc(unittest.TestCase):
 			pickfunc(filename="ladeda.haha")
 
 
-def iter_comments(code: str, filename: str) -> Iterable[Comment]:
+def iter_comments_str(code: str, filename: str) -> Iterable[Comment]:
 	func = pickfunc(filename)
 	return func(code)
 
 
 def iter_comments_file(file: Path) -> Iterable[Comment]:
-	return iter_comments(file.read_text(), file.name)
+	return iter_comments_str(file.read_text(), file.name)
+
+def iter_comments(codeOrFile:Union[Path,str], filename:str=None) -> Iterable[Comment]:
+
+	if isinstance(codeOrFile, str):
+		return iter_comments_str(codeOrFile, filename)
+	return iter_comments_file(codeOrFile)

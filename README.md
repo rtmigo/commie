@@ -65,9 +65,9 @@ for comment in commie.iter_comments(source_code, filename):
 
 --------------------------------------------------------
 
-Forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser) 
+This project was forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser). Motivation:
   
-| **comment_parser** in 2021 | **commie** |
+| **comment_parser** | **commie** |
 |--------------------|------------|
 |Returns only a line number|Returns positions where the comment starts and ends. Just like regular string search|
 |Returns only the text of a comment|Respects markup as well, making it possible to remove or replace the entire comment|

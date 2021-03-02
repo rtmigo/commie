@@ -75,7 +75,7 @@ for comment in commie.iter_comments(source_code, filename=filename):
 
 --------------------------------------------------------
 
-This project was forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser). Motivation:
+This project was forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser) in 2021. Motivation:
   
 | **comment_parser** | **commie** |
 |--------------------|------------|
@@ -83,4 +83,5 @@ This project was forked from [comment_parser](https://github.com/jeanralphaviles
 |Returns only the text of a comment|Respects markup as well, making it possible to remove or replace the entire comment|
 |Depends on [python-magic](https://pypi.org/project/python-magic) requiring an optional installation of binaries|Does not have this dependency|
 
+As for now it's too different from `comment_parser`, so the changed will not be pulled there.
 

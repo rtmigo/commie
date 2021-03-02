@@ -40,7 +40,7 @@ for comment in commie.iter_comments_file(Path("/path/to/source.cpp")):
 ```python
 import commie
 
-source_code_in_golang=loadSomehow(...)
+source_code_in_golang=...
 
 for comment in commie.iter_comments_go(source_code_in_golang):
   # ... process comment ...

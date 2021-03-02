@@ -4,7 +4,7 @@
 
 from typing import Iterable
 
-from commie.common import Comment
+from commie.common import Comment, Span
 
 
 def extract_comments(code: str) -> Iterable[Comment]:
@@ -50,7 +50,7 @@ def extract_comments(code: str) -> Iterable[Comment]:
         state = ESCAPING_CHAR_OUTSIDE_OF_STRING
     elif state == IN_COMMENT:
       if char == '\n':
-        yield Comment(current_comment_text, comment_start_pos, position, False)
+        yield Comment(markup_span=Span(comment_start_pos, position), text_span=Span(comment_start_pos+1, position), multiline=False)
         current_comment_text = ''
         state = DEFAULT
       else:
@@ -71,4 +71,4 @@ def extract_comments(code: str) -> Iterable[Comment]:
   # end of file
 
   if state == IN_COMMENT:
-    yield Comment(current_comment_text, comment_start_pos, position+1, False)
+    yield Comment(markup_span=Span(comment_start_pos, position+1), text_span=Span(comment_start_pos+1, position+1), multiline=False)

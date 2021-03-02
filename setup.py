@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
   name="commie",
-  version="0.0.3",
+  version="0.0.4",
 
   author="Art Galkin",
   author_email="ortemeo@gmail.com",

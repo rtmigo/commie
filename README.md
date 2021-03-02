@@ -13,13 +13,13 @@ import commie
 
 for comment in commie.iter_comments_file(Path("/path/to/source.cpp")):
 
-  # comment code: "/* sample */"
-  print("Comment inner text:", comment.text)
-  print("Comment text location:", comment.text_span.start, comment.text_span.end)
-
-  # comment text: " sample "
+  # something like "/* sample */"
   print("Comment code:", comment.code)
   print("Comment code location:", comment.code_span.start, comment.code_span.end)
+
+  # something like " sample " 
+  print("Comment inner text:", comment.text)
+  print("Comment text location:", comment.text_span.start, comment.text_span.end)
 
 ```
 

@@ -54,17 +54,17 @@ def extract_comments(code:str) -> Iterable[Comment]:
   for match in compiled.finditer(code):
 
     kind = match.lastgroup
-    span = match.span(0)
+    markupSpan = match.span(0)
 
     if kind == "single":
       yield common.Comment(
         match.group("single_content"),
-        span[0], span[1],
+        markupSpan[0], markupSpan[1],
         multiline=False)
     elif kind == "multi":
       yield common.Comment(
         match.group("multi_content"),
-        span[0], span[1],
+        markupSpan[0], markupSpan[1],
         multiline=True)
     elif kind == "error":
       raise common.UnterminatedCommentError()

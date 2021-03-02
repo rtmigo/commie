@@ -15,6 +15,7 @@ from typing import Iterable
 
 from commie import common
 from commie.common import Comment
+from commie.helper import matchGroupToComment
 
 
 def extract_comments(htmlCode: str) -> Iterable[Comment]:
@@ -43,17 +44,27 @@ def extract_comments(htmlCode: str) -> Iterable[Comment]:
   for match in compiled.finditer(htmlCode):
 
     kind = match.lastgroup
-    span = match.span(0)
 
     if kind == "single":
-      yield common.Comment(
-        match.group("single_content"),
-        span[0], span[1],
-        multiline=False)
+      yield matchGroupToComment(match, "single_content", False)
     elif kind == "multi":
-      yield common.Comment(
-        match.group("multi_content"),
-        span[0], span[1],
-        multiline=False)
+      yield matchGroupToComment(match, "multi_content", True)
     elif kind == "error":
       raise common.UnterminatedCommentError()
+
+
+    # kind = match.lastgroup
+    # span = match.span(0)
+    #
+    # if kind == "single":
+    #   yield common.Comment(
+    #     match.group("single_content"),
+    #     span[0], span[1],
+    #     multiline=False)
+    # elif kind == "multi":
+    #   yield common.Comment(
+    #     match.group("multi_content"),
+    #     span[0], span[1],
+    #     multiline=False)
+    # elif kind == "error":
+    #   raise common.UnterminatedCommentError()

@@ -5,54 +5,81 @@
 import unittest
 
 from commie import html_parser, common
-from commie.common import Comment
 
 
-@unittest.skip
 class ShellParserTest(unittest.TestCase):
 
   def testComment(self):
     code = '<!--comment-->'
     comments = list(html_parser.extract_comments(code))
-    expected = [Comment("comment", 0, 14, False)]
-    self.assertEqual(comments, expected)
 
-    c = comments[0]
-    self.assertEqual(code[c.start:c.end + 1], code)
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.substring(code), "<!--comment-->")
+    self.assertEqual(comments[0].text_span.substring(code), "comment")
+    self.assertEqual(comments[0].multiline, False)
+
 
   def testMultilineComment(self):
     code = '<!--multi-line\ncomment-->'
     comments = list(html_parser.extract_comments(code))
 
-    expected = [Comment("multi-line\ncomment", 0, 25, False)]
-    self.assertEqual(comments, expected)
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.substring(code), '<!--multi-line\ncomment-->')
+    self.assertEqual(comments[0].text_span.substring(code), "multi-line\ncomment")
+    self.assertEqual(comments[0].multiline, True)
+
 
   def testTwoSeparateSingleComment(self):
     code = '<!--comment1-->\n<!--comment2-->'
     comments = list(html_parser.extract_comments(code))
-    expected = [
-      Comment("comment1", 0, 15, False),
-      Comment("comment2", 16, 31, False)
-    ]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 2)
+
+    self.assertEqual(comments[0].markup_span.substring(code), '<!--comment1-->')
+    self.assertEqual(comments[0].text_span.substring(code), "comment1")
+    self.assertEqual(comments[0].multiline, False)
+
+    self.assertEqual(comments[1].markup_span.substring(code), '<!--comment2-->')
+    self.assertEqual(comments[1].text_span.substring(code), "comment2")
+    self.assertEqual(comments[1].multiline, False)
+
 
   def testLayeredComment(self):
     code = '<!-- comment<!-- -->'
     comments = list(html_parser.extract_comments(code))
-    expected = [Comment(" comment<!-- ", 0, 20, False)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.substring(code), '<!-- comment<!-- -->')
+    self.assertEqual(comments[0].text_span.substring(code), " comment<!-- ")
+    self.assertEqual(comments[0].multiline, False)
 
   def testNonGreedyComment(self):
     code = '<!--i am a comment--> not a comment -->'
     comments = list(html_parser.extract_comments(code))
-    expected = [Comment("i am a comment", 0, 21, False)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.substring(code), '<!--i am a comment-->')
+    self.assertEqual(comments[0].text_span.substring(code), "i am a comment")
+    self.assertEqual(comments[0].multiline, False)
 
   def testSideBySideComment(self):
     code = '<!--comment1--> ... <!--comment2-->'
     comments = list(html_parser.extract_comments(code))
-    expected = [Comment("comment1", 0, 15, False), Comment("comment2", 20, 35, False)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 2)
+
+    self.assertEqual(comments[0].markup_span.substring(code), '<!--comment1-->')
+    self.assertEqual(comments[0].text_span.substring(code), "comment1")
+    self.assertEqual(comments[0].multiline, False)
+
+    self.assertEqual(comments[1].markup_span.substring(code), '<!--comment2-->')
+    self.assertEqual(comments[1].text_span.substring(code), "comment2")
+    self.assertEqual(comments[1].multiline, False)
+
 
   def testUnterminatedComment(self):
     code = '<!--invalid'

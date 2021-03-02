@@ -21,7 +21,7 @@ setup(
   license='MIT',
 
   # entry_points={
-  #       'console_scripts': [
+  #      'console_scripts': [
   #           'allrights = allrights:main',
   #       ]},
 

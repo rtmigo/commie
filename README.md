@@ -63,6 +63,9 @@ for comment in commie.iter_comments(source_code, filename):
   pass
 ```
 
+<details>
+  <summary markdown="span">This is the summary text, click me to expand</summary>
+
 # Forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser) 
 
 | **comment_parser** | **commie** |
@@ -70,4 +73,6 @@ for comment in commie.iter_comments(source_code, filename):
 |Returns only a line number|Returns positions where the comment starts and ends. Just like regular string search|
 |Returns only the text of a comment|Respects markup as well, making it possible to remove or replace the entire comment|
 |Depends on [python-magic](https://pypi.org/project/python-magic) requiring an optional installation of binaries|Does not have this dependency|
+
+</details>
 

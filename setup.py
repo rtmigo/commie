@@ -18,7 +18,7 @@ setup(
   long_description=(Path(__file__).parent / 'README.md').read_text(),
   long_description_content_type='text/markdown',
 
-  license='MIT',
+  license='BSD-3-Clause',
 
   # entry_points={
   #      'console_scripts': [
@@ -31,7 +31,7 @@ setup(
   classifiers=[
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    'License :: OSI Approved :: MIT License',
+    'License :: OSI Approved :: BSD License',
     'Topic :: Software Development :: Documentation',
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",

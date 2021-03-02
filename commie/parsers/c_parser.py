@@ -12,8 +12,6 @@ Works with:
 
 """
 
-# AG: Hmm... Is it really different from JS parser?..
-
 import re
 from typing import Iterable
 

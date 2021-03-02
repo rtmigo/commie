@@ -13,7 +13,7 @@ def commentsToList(code:str) -> List[Comment]:
   return list(iter_comments_html(code))
 
 
-class ShellParserTest(unittest.TestCase):
+class HtmlParserTest(unittest.TestCase):
 
   def testComment(self):
     code = '<!--comment-->'

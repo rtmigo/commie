@@ -13,9 +13,13 @@ import commie
 
 sourceCode=Path("/path/to/mycode.go").read_text()
 
-for comment in commie.iter_comments_go(sourceCode): 
+for comment in commie.iter_comments_go(sourceCode):
+ 
+  # comment code: "/* sample */"
   print("Comment inner text:", comment.text_span.extract(sourceCode))
   print("Comment text location:", comment.text_span.start, comment.text_span.end)
+  
+  # comment text: " sample "
   print("Comment code:", comment.markup_span.extract(sourceCode))
   print("Comment code location:", comment.markup_span.start, comment.markup_span.end)
 

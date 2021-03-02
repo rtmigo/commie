@@ -3,7 +3,7 @@
 
 import re
 
-from commie.common import Comment, Span
+from commie.parsers.common import Comment, Span
 
 
 def matchGroupToComment(match:re.Match, groupName:str, multiline:bool) -> Comment:

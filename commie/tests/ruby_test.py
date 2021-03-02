@@ -5,7 +5,7 @@
 
 import unittest
 
-from commie import ruby_parser
+from commie.parsers import ruby_parser
 
 
 class ShellParserTest(unittest.TestCase):

@@ -4,7 +4,7 @@
 
 import unittest
 
-from commie import go_parser, common
+from commie.parsers import common, go_parser
 
 
 class GoParserTest(unittest.TestCase):

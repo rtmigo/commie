@@ -4,7 +4,7 @@
 
 import unittest
 
-from commie import python_parser
+from commie.parsers import python_parser
 
 
 class PythonParserTest(unittest.TestCase):

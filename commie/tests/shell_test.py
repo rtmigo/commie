@@ -4,7 +4,7 @@
 
 import unittest
 
-from commie import shell_parser
+from commie.parsers import shell_parser
 
 
 class ShellParserTest(unittest.TestCase):

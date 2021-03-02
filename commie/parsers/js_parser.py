@@ -4,8 +4,8 @@
 
 from typing import Iterable, Optional
 
-from commie import common
-from commie.common import Comment, Span
+from commie.parsers import common
+from commie.parsers.common import Comment, Span
 
 
 def extract_comments(code: str) -> Iterable[Comment]:

@@ -4,7 +4,7 @@
 
 import unittest
 
-from commie import js_parser, common
+from commie.parsers import common, js_parser
 
 
 class JsParserTest(unittest.TestCase):

@@ -1,6 +1,6 @@
-#!/usr/bin/python
-
-# AG: It seems to be the same as JS parser. I'll just leave it here for while
+# SPDX-FileCopyrightText: Copyright (c) 2021 Art Galkin <ortemeo@gmail.com>
+# SPDX-FileCopyrightText: Copyright (c) 2015 Jean-Ralph Aviles
+# SPDX-License-Identifier: MIT
 
 """This module provides methods for parsing comments from C family languages.
 
@@ -9,14 +9,19 @@ Works with:
   C++
   Objective-C
   Java
+
 """
 
+# AG: Hmm... Is it really different from JS parser?..
+
 import re
-from bisect import bisect_left
+from typing import Iterable
+
 from comment_parser.parsers import common
+from comment_parser.parsers.common import Comment
 
 
-def extract_comments(code):
+def extract_comments(code:str) -> Iterable[Comment]:
   """Extracts a list of comments from the given C family source code.
 
   Comments are represented with the Comment class found in the common module.
@@ -46,26 +51,36 @@ def extract_comments(code):
 
   compiled = re.compile(pattern, re.VERBOSE | re.MULTILINE)
 
-  lines_indexes = []
-  for match in re.finditer(r"$", code, re.M):
-    lines_indexes.append(match.start())
-
-  comments = []
   for match in compiled.finditer(code):
-    kind = match.lastgroup
 
-    start_character = match.start()
-    line_no = bisect_left(lines_indexes, start_character)
+    kind = match.lastgroup
+    span = match.span(0)
 
     if kind == "single":
-      comment_content = match.group("single_content")
-      comment = common.Comment(comment_content, line_no + 1)
-      comments.append(comment)
+      yield common.Comment(
+        match.group("single_content"),
+        span[0], span[1],
+        multiline=False)
     elif kind == "multi":
-      comment_content = match.group("multi_content")
-      comment = common.Comment(comment_content, line_no + 1, multiline=True)
-      comments.append(comment)
+      yield common.Comment(
+        match.group("multi_content"),
+        span[0], span[1],
+        multiline=True)
     elif kind == "error":
       raise common.UnterminatedCommentError()
-
-  return comments
+  #
+  #   start_character = match.start()
+  #   line_no = bisect_left(lines_indexes, start_character)
+  #
+  #   if kind == "single":
+  #     comment_content = match.group("single_content")
+  #     comment = common.Comment(comment_content, line_no + 1)
+  #     comments.append(comment)
+  #   elif kind == "multi":
+  #     comment_content = match.group("multi_content")
+  #     comment = common.Comment(comment_content, line_no + 1, multiline=True)
+  #     comments.append(comment)
+  #   elif kind == "error":
+  #     raise common.UnterminatedCommentError()
+  #
+  # return comments

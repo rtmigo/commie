@@ -27,7 +27,7 @@ for comment in commie.iter_comments_go(sourceCode):
 
 # Parsers
 
-| **Method** | **Use for** |
+| **Method** | **Works for** |
 |--------------------|------------|
 | `commie.iter_comments_c`| C99+, C++, Objective-C, C#, Java |
 | `commie.iter_comments_js`| JavaScript, Dart |

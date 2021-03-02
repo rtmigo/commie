@@ -38,7 +38,7 @@ for comment in commie.iter_comments(Path("/path/to/source.cpp")):
 
 | **Method** | **Works for** |
 |--------------------|------------|
-| `commie.iter_comments_c`| C99+, C++, Objective-C, C#, Java |
+| `commie.iter_comments_c`| C, C++, Objective-C, C#, Java |
 | `commie.iter_comments_js`| JavaScript, Dart, TypeScript |
 | `commie.iter_comments_go`|Go|
 | `commie.iter_comments_ruby` | Ruby |

@@ -59,31 +59,9 @@ def extract_comments(code:str) -> Iterable[Comment]:
 
     if kind == "single":
       yield matchGroupToComment(match, "single_content", False)
-      # yield common.Comment(
-      #   match.group("single_content"),
-      #   markupSpan[0], markupSpan[1],
-      #   multiline=False)
+
     elif kind == "multi":
       yield matchGroupToComment(match, "multi_content", True)
-      # yield common.Comment(
-      #   match.group("multi_content"),
-      #   markupSpan[0], markupSpan[1],
-      #   multiline=True)
+
     elif kind == "error":
       raise common.UnterminatedCommentError()
-  #
-  #   start_character = match.start()
-  #   line_no = bisect_left(lines_indexes, start_character)
-  #
-  #   if kind == "single":
-  #     comment_content = match.group("single_content")
-  #     comment = common.Comment(comment_content, line_no + 1)
-  #     comments.append(comment)
-  #   elif kind == "multi":
-  #     comment_content = match.group("multi_content")
-  #     comment = common.Comment(comment_content, line_no + 1, multiline=True)
-  #     comments.append(comment)
-  #   elif kind == "error":
-  #     raise common.UnterminatedCommentError()
-  #
-  # return comments

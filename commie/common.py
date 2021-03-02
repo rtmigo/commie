@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2021 Art Galkin <ortemeo@gmail.com>
 # SPDX-FileCopyrightText: Copyright (c) 2015 Jean-Ralph Aviles
 # SPDX-License-Identifier: MIT
+
 from typing import NamedTuple
 
 
@@ -15,26 +16,24 @@ class FileError(Error):
 class UnterminatedCommentError(Error):
   """Raised if an Unterminated multi-line comment is encountered."""
 
-class Span(NamedTuple):
-  start:int
-  end:int
 
-  def extract(self, text:str):
+class Span(NamedTuple):
+  start: int
+  end: int
+
+  def extract(self, text: str):
     return text[self.start:self.end]
 
 
 class Comment:
   """Represents comments found in a source code string."""
 
-  def __init__(self, markup_span: Span, text_span:Span, multiline: bool):
+  def __init__(self, markup_span: Span, text_span: Span, multiline: bool):
 
-    self.markup_span:Span = markup_span
-    self.text_span:Span = text_span
-    #self.start = start
-    #self.end = end
+    self.markup_span: Span = markup_span
+    self.text_span: Span = text_span
+
     self.multiline = multiline
-
-
 
   def __repr__(self):
     return f"Comment({self.markup_span}, {self.text_span}, {self.multiline})"

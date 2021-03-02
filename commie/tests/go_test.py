@@ -5,17 +5,19 @@
 import unittest
 
 from commie import go_parser, common
-from commie.common import Comment
 
 
-@unittest.skip # todo
 class GoParserTest(unittest.TestCase):
 
   def testSingleLineComment(self):
     code = '// single line comment'
     comments = list(go_parser.extract_comments(code))
-    expected = [Comment(" single line comment", 0, len(code), False)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.extract(code), "// single line comment")
+    self.assertEqual(comments[0].text_span.extract(code), " single line comment")
+    self.assertEqual(comments[0].multiline, False)
 
   def testSingleLineCommentInRuneLiteral(self):
     code = "msg := '// this is not a comment'"
@@ -35,14 +37,22 @@ class GoParserTest(unittest.TestCase):
   def testMultiLineComment(self):
     code = '/* multiline\ncomment */'
     comments = list(go_parser.extract_comments(code))
-    expected = [Comment(" multiline\ncomment ", 0, 23, True)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.extract(code), '/* multiline\ncomment */')
+    self.assertEqual(comments[0].text_span.extract(code), " multiline\ncomment ")
+    self.assertEqual(comments[0].multiline, True)
 
   def testMultiLineCommentWithStars(self):
     code = "/***************/"
     comments = list(go_parser.extract_comments(code))
-    expected = [Comment("*************", 0, 17, True)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.extract(code), "/***************/")
+    self.assertEqual(comments[0].text_span.extract(code), "*************")
+    self.assertEqual(comments[0].multiline, True)
 
   def testMultiLineCommentInRuneLiteral(self):
     code = "msg := '/* This is not a\\nmultiline comment */'"

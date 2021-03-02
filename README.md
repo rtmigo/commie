@@ -5,11 +5,9 @@
 [![PyPI license](https://img.shields.io/pypi/l/commie.svg)](https://pypi.python.org/pypi/commie/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/commie.svg)](https://pypi.python.org/pypi/commie/)
 
-Native Python package for extracting source code comments.
+Native Python package for extracting comments from source code.
 
-Supports multiple programming languages [(see list)](#Find-comments-in-a-string).
-
-
+The source can be written in multiple programming languages [[see list](#Find-comments-in-a-string)]
 
 # Install
 

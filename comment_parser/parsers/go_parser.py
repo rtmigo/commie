@@ -62,17 +62,17 @@ def extract_comments(goCode: str) -> Iterable[Comment]:
       # determine if single or multi-line comment.
       if char == '/':
         state = IN_SINGLE_LINE_COMMENT
-        comment_start_pos = position
+        comment_start_pos = position-1
       elif char == '*':
         comment_start = line_counter
         state = IN_MULTI_LINE_COMMENT
-        comment_start_pos = position
+        comment_start_pos = position-1
       else:
         state = DEFAULT
     elif state == IN_SINGLE_LINE_COMMENT:
       # In single-line comment, read characters util EOL.
       if char == '\n':
-        yield Comment(current_comment, comment_start_pos, position, False)
+        yield Comment(current_comment, comment_start_pos, position+1, False)
         current_comment = ''
         state = 0
       else:
@@ -88,7 +88,7 @@ def extract_comments(goCode: str) -> Iterable[Comment]:
       # In multi-line comment with asterisk found. Determine if
       # comment is ending.
       if char == '/':
-        yield Comment(current_comment, comment_start_pos, position, True)
+        yield Comment(current_comment, comment_start_pos, position+1, True)
         current_comment = ''
         state = DEFAULT
       else:
@@ -115,4 +115,4 @@ def extract_comments(goCode: str) -> Iterable[Comment]:
     raise common.UnterminatedCommentError()
   if state == IN_SINGLE_LINE_COMMENT:
     # was in single-line comment
-    yield Comment(current_comment, comment_start_pos, position, False)
+    yield Comment(current_comment, comment_start_pos, position+1, False)

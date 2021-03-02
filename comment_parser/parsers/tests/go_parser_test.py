@@ -1,19 +1,19 @@
-#!/usr/bin/python
-"""Tests for comment_parser.parsers.go_parser.py"""
+# SPDX-FileCopyrightText: Copyright (c) 2021 Art Galkin <ortemeo@gmail.com>
+# SPDX-FileCopyrightText: Copyright (c) 2015 Jean-Ralph Aviles
+# SPDX-License-Identifier: MIT
 
 import unittest
+
 from comment_parser.parsers import common, go_parser
+from comment_parser.parsers.common import Comment
 
 
-@unittest.skip # todo
 class GoParserTest(unittest.TestCase):
 
   def testSingleLineComment(self):
     code = '// single line comment'
     comments = list(go_parser.extract_comments(code))
-    print(comments)
-    exit()
-    expected = [common.Comment(code[2:], 1, multiline=False)]
+    expected = [Comment(" single line comment", 0, len(code), False)]
     self.assertEqual(comments, expected)
 
   def testSingleLineCommentInRuneLiteral(self):
@@ -34,17 +34,13 @@ class GoParserTest(unittest.TestCase):
   def testMultiLineComment(self):
     code = '/* multiline\ncomment */'
     comments = list(go_parser.extract_comments(code))
-    print(comments)
-    exit()
-    expected = [common.Comment(code[2:-2], 1, multiline=True)]
+    expected = [Comment(" multiline\ncomment ", 0, 23, True)]
     self.assertEqual(comments, expected)
 
   def testMultiLineCommentWithStars(self):
     code = "/***************/"
     comments = list(go_parser.extract_comments(code))
-    print(comments)
-    exit()
-    expected = [common.Comment(code[2:-2], 1, multiline=True)]
+    expected = [Comment("*************", 0, 17, True)]
     self.assertEqual(comments, expected)
 
   def testMultiLineCommentInRuneLiteral(self):

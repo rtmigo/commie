@@ -5,6 +5,15 @@
 [![PyPI license](https://img.shields.io/pypi/l/commie.svg)](https://pypi.python.org/pypi/commie/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/commie.svg)](https://pypi.python.org/pypi/commie/)
 
+Native Python package for extracting source code comments in different programming languages.
+
+# Install
+
+```sh
+$ pip3 install commie
+```
+
+
 # Find comments in a file
 
 ```python

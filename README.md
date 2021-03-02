@@ -81,7 +81,7 @@ This project was forked from [comment_parser](https://github.com/jeanralphaviles
 |--------------------|------------|
 |Returns only a line number|Returns positions where the comment starts and ends. Just like regular string search|
 |Returns only the text of a comment|Respects markup as well, making it possible to remove or replace the entire comment|
-|Depends on [python-magic](https://pypi.org/project/python-magic) that requires an optional installation of binaries|Pure Python, one line installation|
+|Depends on [python-magic](https://pypi.org/project/python-magic) that requires an optional installation of binaries|Pure Python. Installed in one line|
 
 As for now it's too different from `comment_parser`, so the changed will not be pulled there.
 

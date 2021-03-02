@@ -67,7 +67,7 @@ for comment in commie.iter_comments(source_code, filename):
 
 | **comment_parser** | **commie** |
 |--------------------|------------|
-|Returned only a line number|Returns positions where the comment starts and ends. Just like regular string search|
-|Returned only the text of a comment|Respects markup as well, making it possible to remove or replace the entire comment|
+|Returns only a line number|Returns positions where the comment starts and ends. Just like regular string search|
+|Returns only the text of a comment|Respects markup as well, making it possible to remove or replace the entire comment|
 |Depends on [python-magic](https://pypi.org/project/python-magic) requiring an optional installation of binaries|Does not have this dependency|
 

@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
   name="commie",
-  version="0.0.4",
+  version="0.0.5",
 
   author="Art Galkin",
   author_email="ortemeo@gmail.com",
@@ -13,7 +13,7 @@ setup(
   packages=find_packages(),
   install_requires=[],
 
-  description="Finds comments in source code in different programming languages",
+  description="Extracts comments from source code in different programming languages",
 
   long_description=(Path(__file__).parent / 'README.md').read_text(),
   long_description_content_type='text/markdown',
@@ -29,7 +29,7 @@ setup(
 
   # https://pypi.org/classifiers/
   classifiers=[
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     'License :: OSI Approved :: MIT License',
     'Topic :: Software Development :: Documentation',

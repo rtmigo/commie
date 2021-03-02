@@ -59,7 +59,7 @@ for comment in commie.iter_comments_go(source_code_in_golang):
 
 # Find comments in a string with a known filename
 
-Method `commie.iter_comments` will try to guess the file format from the provided filename
+Method `commie.iter_comments` will try to guess the file format from the provided filename.
 
 ```python
 from pathlib import Path

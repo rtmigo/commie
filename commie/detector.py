@@ -2,7 +2,16 @@ import unittest
 from pathlib import Path
 from typing import Iterable
 
-from . import *
+from .parsers.c_parser import extract_comments as iter_comments_c, \
+  extract_comments as iter_comments_sass
+from .parsers.common import Comment, FormatUndetectedError
+from .parsers.css_parser import extract_comments as iter_comments_css
+from .parsers.go_parser import extract_comments as iter_comments_go
+from .parsers.html_parser import extract_comments as iter_comments_html
+from .parsers.js_parser import extract_comments as iter_comments_js
+from .parsers.python_parser import extract_comments as iter_comments_python
+from .parsers.ruby_parser import extract_comments as iter_comments_ruby
+from .parsers.shell_parser import extract_comments as iter_comments_shell
 
 
 def pickfunc(filename: str):
@@ -35,17 +44,27 @@ def pickfunc(filename: str):
   if ext in ["scss"]:
     return iter_comments_sass
 
+  if ext in ["css"]:
+    return iter_comments_css
+
   if ext in ["sh"]:
     return iter_comments_shell
+
+  raise FormatUndetectedError
 
 
 class TestPickFunc(unittest.TestCase):
   def test_html(self):
     self.assertEqual(pickfunc(filename="file.html"), iter_comments_html)
+    self.assertEqual(pickfunc(filename="1991.HTM"), iter_comments_html)
 
   def test_js(self):
     self.assertEqual(pickfunc(filename="file.dart"), iter_comments_js)
     self.assertEqual(pickfunc(filename="file.js"), iter_comments_js)
+
+  def test_undetected(self):
+    with self.assertRaises(FormatUndetectedError):
+      pickfunc(filename="ladeda.haha")
 
 
 def iter_comments(code: str, filename: str) -> Iterable[Comment]:

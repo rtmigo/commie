@@ -16,6 +16,10 @@ class FileError(Error):
 class UnterminatedCommentError(Error):
   """Raised if an Unterminated multi-line comment is encountered."""
 
+class FormatUndetectedError(Error):
+  """Raised if there is an issue reading a file."""
+
+
 
 class Span(NamedTuple):
   start: int

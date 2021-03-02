@@ -63,9 +63,11 @@ for comment in commie.iter_comments(source_code, filename):
   pass
 ```
 
+--------------------------------------------------------
+
 ### Forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser)
 <details>
-  <summary markdown="span">Motivation</summary>
+  <summary markdown="span">Why?</summary>
   
 | **comment_parser** in 2021 | **commie** |
 |--------------------|------------|

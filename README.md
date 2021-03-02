@@ -7,7 +7,7 @@
 
 Native Python package for **extracting comments** from source code.
 
-The source can be written in [multiple programming languages](#Find-comments-in-a-string).
+[Multiple programming languages](#Find-comments-in-a-string) for the source are supported.
 
 # Install
 

@@ -23,9 +23,9 @@ def extract_comments(rubyCode: str) -> Iterable[Comment]:
 	  Python list of common.Comment in the order that they appear in the code..
 	"""
 	pattern = r"""
-    (?P<literal> ([\"'])((?:\\\2|(?:(?!\2)).)*)(\2)) |
-    (?P<single> \#(?P<single_content>.*?)$)
-  """
+		(?P<literal> ([\"'])((?:\\\2|(?:(?!\2)).)*)(\2)) |
+		(?P<single> \#(?P<single_content>.*?)$)
+	  """
 	compiled = re.compile(pattern, re.VERBOSE | re.MULTILINE)
 
 	comments = []

@@ -12,24 +12,16 @@ from commie.parsers.common import Comment, Span
 
 
 def extract_comments(source: str) -> Iterable[Comment]:
-	"""Extracts a list of comments from the given Javascript source code.
+	"""Extracts a list of comments from C-like source code.
 
-	Comments are represented with the Comment class found in the common module.
-	Javascript comments come in two forms, single and multi-line comments.
+	C-like comments come in two forms, single and multi-line comments.
 	  - Single-line comments begin with '//' and continue to the end of line.
 	  - Multi-line comments begin with '/*' and end with '*/' and can span
 		multiple lines of code. If a multi-line comment does not terminate
 		before EOF is reached, then an exception is raised.
+
 	This module takes quoted strings into account when extracting comments from
 	source code.
-
-	Args:
-	  source: String containing code to extract comments from.
-	Returns:
-	  Python list of common.Comment in the order that they appear in the code.
-	Raises:
-	  common.UnterminatedCommentError: Encountered an unterminated multi-line
-		comment.
 	"""
 
 	WAITING_FOR_COMMENT = 0
@@ -40,7 +32,7 @@ def extract_comments(source: str) -> Iterable[Comment]:
 	IN_STRING_ESCAPE_NEXT_CHAR = 6
 	FOUND_SLASH = 1
 
-	state = WAITING_FOR_COMMENT
+	state:int = WAITING_FOR_COMMENT
 
 	markup_start_pos = None
 	text_start_pos: Optional[int] = 0

@@ -34,11 +34,11 @@ def extract_comments(htmlCode: str) -> Iterable[Comment]:
 		comment.
 	"""
 	pattern = r"""
-    (?P<literal> (\"([^\"\n])*\")+) |
-    (?P<single> <!--(?P<single_content>.*?)-->) |
-    (?P<multi> <!--(?P<multi_content>(.|\n)*?)?-->) |
-    (?P<error> <!--(.*)?)
-  """
+		(?P<literal> (\"([^\"\n])*\")+) |
+		(?P<single> <!--(?P<single_content>.*?)-->) |
+		(?P<multi> <!--(?P<multi_content>(.|\n)*?)?-->) |
+		(?P<error> <!--(.*)?)
+	  """
 	compiled = re.compile(pattern, re.VERBOSE | re.MULTILINE)
 
 	for match in compiled.finditer(htmlCode):

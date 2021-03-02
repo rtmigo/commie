@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
   name="commie",
-  version="0.0.6",
+  version="1.0.0",
 
   author="Art Galkin",
   author_email="ortemeo@gmail.com",
@@ -29,7 +29,8 @@ setup(
 
   # https://pypi.org/classifiers/
   classifiers=[
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta"
+    #"Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     'License :: OSI Approved :: BSD License',
     'Topic :: Software Development :: Documentation',

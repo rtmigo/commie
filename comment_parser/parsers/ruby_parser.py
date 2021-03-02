@@ -1,12 +1,15 @@
-#!/usr/bin/python
-"""This module provides methods for parsing comments from Ruby code."""
+# SPDX-FileCopyrightText: Copyright (c) 2021 Art Galkin <ortemeo@gmail.com>
+# SPDX-FileCopyrightText: Copyright (c) 2015 Jean-Ralph Aviles
+# SPDX-License-Identifier: MIT
 
 import re
-from bisect import bisect_left
+from typing import Iterable
+
 from comment_parser.parsers import common
+from comment_parser.parsers.common import Comment
 
 
-def extract_comments(code):
+def extract_comments(rubyCode: str) -> Iterable[Comment]:
   """Extracts a list of comments from the given Ruby source code.
 
   Comments are represented with the Comment class found in the common module.
@@ -15,7 +18,7 @@ def extract_comments(code):
   http://ruby-doc.com/docs/ProgrammingRuby.
 
   Args:
-    code: String containing code to extract comments from.
+    rubyCode: String containing code to extract comments from.
   Returns:
     Python list of common.Comment in the order that they appear in the code..
   """
@@ -25,20 +28,15 @@ def extract_comments(code):
   """
   compiled = re.compile(pattern, re.VERBOSE | re.MULTILINE)
 
-  lines_indexes = []
-  for match in re.finditer(r"$", code, re.M):
-    lines_indexes.append(match.start())
-
   comments = []
-  for match in compiled.finditer(code):
+  for match in compiled.finditer(rubyCode):
     kind = match.lastgroup
-
-    start_character = match.start()
-    line_no = bisect_left(lines_indexes, start_character)
+    span = match.span(0)
 
     if kind == "single":
-      comment_content = match.group("single_content")
-      comment = common.Comment(comment_content, line_no + 1)
-      comments.append(comment)
+      yield common.Comment(
+        match.group("single_content"),
+        span[0], span[1],
+        multiline=False)
 
   return comments

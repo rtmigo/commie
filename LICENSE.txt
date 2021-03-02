@@ -1,5 +1,3 @@
-The 3-Clause BSD License
-
 Copyright (c) 2021 Art Galkin <ortemeo@gmail.com>
 Copyright (c) 2015 Jean-Ralph Aviles
 

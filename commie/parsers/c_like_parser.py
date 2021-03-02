@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: Copyright (c) 2021 Art Galkin <ortemeo@gmail.com>
 # SPDX-FileCopyrightText: Copyright (c) 2015 Jean-Ralph Aviles
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: BSD-3-Clause
 
 # AG 2021: This was named js_parser.py in comment_parser@pypi.
 # But not it is used for parsing C code as well.

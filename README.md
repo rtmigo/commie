@@ -7,7 +7,7 @@
 
 Native Python package for **extracting comments** from source code.
 
-Multiple programming and markup languages are supported: [see list](#Find-comments-in-a-string).
+Multiple programming and markup languages are supported: [see list](https://github.com/rtmigo/commie.python#find-comments-in-a-string).
 
 # Install
 
@@ -83,5 +83,5 @@ This project was forked from [comment_parser](https://github.com/jeanralphaviles
 |Returns only the text of a comment|Respects markup as well, making it possible to remove or replace the entire comment|
 |Depends on [python-magic](https://pypi.org/project/python-magic) that requires an optional installation of binaries|Pure Python. Installed in one line|
 
-As for now it's too different from `comment_parser`, so the changed will not be pulled there.
+As for now it's too different from `comment_parser`, so the changes will not be pulled there.
 

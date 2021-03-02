@@ -5,13 +5,13 @@ import unittest
 from pathlib import Path
 from typing import Iterable, Union
 
-from .parsers.c_parser import extract_comments as iter_comments_c, \
-	extract_comments as iter_comments_sass
+from .parsers.c_like_parser import extract_comments as iter_comments_c, \
+	extract_comments as iter_comments_js
+from .parsers.c_regex_parser import extract_comments as iter_comments_sass
 from .parsers.common import Comment, FormatUndetectedError
 from .parsers.css_parser import extract_comments as iter_comments_css
 from .parsers.go_parser import extract_comments as iter_comments_go
 from .parsers.html_parser import extract_comments as iter_comments_html
-from .parsers.js_parser import extract_comments as iter_comments_js
 from .parsers.python_parser import extract_comments as iter_comments_python
 from .parsers.ruby_parser import extract_comments as iter_comments_ruby
 from .parsers.shell_parser import extract_comments as iter_comments_shell

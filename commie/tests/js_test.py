@@ -5,15 +5,16 @@
 import unittest
 from typing import List
 
-from .. import iter_comments_js
+from .helper import minimize
+from .. import iter_comments_c
 from ..parsers.common import Comment, UnterminatedCommentError
 
 
 def commentsToList(code: str) -> List[Comment]:
-	return list(iter_comments_js(code))
+	return list(iter_comments_c(code))
 
 
-class JsParserTest(unittest.TestCase):
+class CParserJsTest(unittest.TestCase):
 
 	def testSingleLineComment(self):
 		code = '// single line comment'
@@ -68,22 +69,36 @@ class JsParserTest(unittest.TestCase):
 		with self.assertRaises(UnterminatedCommentError):
 			commentsToList(code)
 
-	def testMultiple(self):
+	def testFragment(self):
 		code = """
-
-    /*
-     * this is a fancy comment
-     * one more line of it
-     */
-
-    let forgetIt = prompt("What?");
-
-    // bye!
-
-    """
+		
+		/**
+		 * JSDoc is used to annotate JavaScript.
+		 *
+		 * @author: Wikipedia
+		 */
+		 
+		// single line comment
+	
+		let forgetIt = prompt("What?");
+		
+		// comment at eof"""
 
 		comments = commentsToList(code)
 
-		self.assertEqual(len(comments), 2)
+		self.assertEqual(len(comments), 3)
+
+		self.assertEqual(minimize(comments[0].code),
+						 '/** * JSDoc is used to annotate JavaScript. * * @author: Wikipedia */')
+		self.assertEqual(minimize(comments[0].text),
+						 '* * JSDoc is used to annotate JavaScript. * * @author: Wikipedia')
 		self.assertEqual(comments[0].multiline, True)
+
+		self.assertEqual(comments[1].code, '// single line comment')
+		self.assertEqual(comments[1].text, ' single line comment')
 		self.assertEqual(comments[1].multiline, False)
+
+
+		self.assertEqual(comments[2].code, '// comment at eof')
+		self.assertEqual(comments[2].text, ' comment at eof')
+		self.assertEqual(comments[2].multiline, False)

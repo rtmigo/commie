@@ -2,6 +2,9 @@
 # SPDX-FileCopyrightText: Copyright (c) 2015 Jean-Ralph Aviles
 # SPDX-License-Identifier: MIT
 
+# AG 2021: This was named js_parser.py in comment_parser@pypi.
+# But not it is used for parsing C code as well.
+
 from typing import Iterable, Optional
 
 from commie.parsers import common
@@ -38,7 +41,6 @@ def extract_comments(source: str) -> Iterable[Comment]:
 	FOUND_SLASH = 1
 
 	state = WAITING_FOR_COMMENT
-	# current_comment_text = ''
 
 	markup_start_pos = None
 	text_start_pos: Optional[int] = 0
@@ -76,7 +78,7 @@ def extract_comments(source: str) -> Iterable[Comment]:
 				yield common.Comment(
 					source,
 					text_span=Span(text_start_pos, text_start_pos + text_length),
-					code_span=Span(markup_start_pos, position + 1),
+					code_span=Span(markup_start_pos, position),
 					multiline=False)
 				text_length = 0
 				state = WAITING_FOR_COMMENT

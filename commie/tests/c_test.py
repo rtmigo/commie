@@ -5,13 +5,14 @@
 import unittest
 from typing import List
 
-from .helper import minimize
-from .. import iter_comments_c
-from ..parsers.common import Comment, UnterminatedCommentError
+from commie import iter_comments_c
+from commie.parsers.common import Comment, UnterminatedCommentError
+from commie.tests.helper import minimize
 
 
 def commentsToList(code: str) -> List[Comment]:
 	return list(iter_comments_c(code))
+	#return list(iter_comments_c(code))
 
 
 class CParserTest(unittest.TestCase):
@@ -95,13 +96,12 @@ class CParserTest(unittest.TestCase):
 		self.assertEqual(comments[0].text, ' "abc ')
 		self.assertEqual(comments[0].multiline, True)
 
-	# def testCommentStartInsideEscapedQuotesInStringLiteral(self):
-	# 	# TODO(#27): Re-enable test.
-	# 	code = r'" \" /* \" "'
-	# 	comments = commentsToList(code)
-	# 	# comments = c_parser.extract_comments(code)
-	# 	self.assertEqual(comments, [])
-	# 	pass
+	def testCommentStartInsideEscapedQuotesInStringLiteral(self):
+		#FIXME: This one fails with UnterminatedCommentError
+		code = r'" \" /* \" "'
+		comments = commentsToList(code)
+		self.assertEqual(comments, [])
+		pass
 
 	def testStringEscapedBackslashCharacter(self):
 		code = r'"\\"'
@@ -153,3 +153,31 @@ class CParserTest(unittest.TestCase):
 		self.assertEqual(comments[1].code, '// and ended it here */')
 		self.assertEqual(comments[1].text, " and ended it here */")
 		self.assertEqual(comments[1].multiline, False)
+
+	def testFragment(self):
+		code = """
+		
+		/**
+		 * JSDoc is rarely used to annotate C.
+		 *
+		 * @param: abc
+		 */		
+	
+		int main() { return 42; } 
+	
+		// comment at eof"""
+
+		comments = commentsToList(code)
+
+		self.assertEqual(len(comments), 2)
+
+		self.assertEqual(minimize(comments[0].code),
+						 '/** * JSDoc is rarely used to annotate C. * * @param: abc */')
+		self.assertEqual(minimize(comments[0].text),
+						 '* * JSDoc is rarely used to annotate C. * * @param: abc')
+		self.assertEqual(comments[0].multiline, True)
+
+		self.assertEqual(comments[1].code, '// comment at eof')
+		self.assertEqual(comments[1].text, ' comment at eof')
+		self.assertEqual(comments[1].multiline, False)
+

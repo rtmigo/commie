@@ -3,15 +3,20 @@
 # SPDX-License-Identifier: MIT
 
 import unittest
+from typing import List
 
-from commie.parsers import common, go_parser
+from .. import iter_comments_go, Comment, UnterminatedCommentError
+
+
+def commentsToList(code:str) -> List[Comment]:
+  return list(iter_comments_go(code))
 
 
 class GoParserTest(unittest.TestCase):
 
   def testSingleLineComment(self):
     code = '// single line comment'
-    comments = list(go_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -21,22 +26,22 @@ class GoParserTest(unittest.TestCase):
 
   def testSingleLineCommentInRuneLiteral(self):
     code = "msg := '// this is not a comment'"
-    comments = list(go_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testSingleLineCommentInBackTickedLiteral(self):
     code = "msg := `// this is not a comment`"
-    comments = list(go_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testSingleLineCommentInQuotedLiteral(self):
     code = 'msg := "// this is not a comment"'
-    comments = list(go_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testMultiLineComment(self):
     code = '/* multiline\ncomment */'
-    comments = list(go_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -46,7 +51,7 @@ class GoParserTest(unittest.TestCase):
 
   def testMultiLineCommentWithStars(self):
     code = "/***************/"
-    comments = list(go_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -56,20 +61,20 @@ class GoParserTest(unittest.TestCase):
 
   def testMultiLineCommentInRuneLiteral(self):
     code = "msg := '/* This is not a\\nmultiline comment */'"
-    comments = list(go_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testMultiLineCommentInQuotedLiteral(self):
     code = 'msg := "/* This is not a\\nmultiline comment */"'
-    comments = list(go_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testMultiLineCommentInBackTickedLiteral(self):
     code = 'msg := `/* This is not a\\nmultiline comment */`'
-    comments = list(go_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testMultiLineCommentUnterminated(self):
     code = 'a := 1 /* Unterminated\\n comment'
-    with self.assertRaises(common.UnterminatedCommentError):
-      list(go_parser.extract_comments(code))
+    with self.assertRaises(UnterminatedCommentError):
+      commentsToList(code)

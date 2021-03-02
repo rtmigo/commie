@@ -3,15 +3,19 @@
 # SPDX-License-Identifier: MIT
 
 import unittest
+from typing import List
 
-from commie.parsers import shell_parser
+from commie import iter_comments_shell, Comment
 
+
+def commentsToList(code:str) -> List[Comment]:
+  return list(iter_comments_shell(code))
 
 class ShellParserTest(unittest.TestCase):
 
   def testComment(self):
     code = '# comment'
-    comments = list(shell_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(len(comments), 1)
 
     self.assertEqual(comments[0].markup_span.extract(code), '# comment')
@@ -20,32 +24,32 @@ class ShellParserTest(unittest.TestCase):
 
   def testEscapedComment(self):
     code = r'\# not a comment'
-    comments = list(shell_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testCommentInSingleQuotedString(self):
     code = "'this is # not a comment'"
-    comments = list(shell_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testCommentInDoubleQuotedString(self):
     code = '"this is # not a comment"'
-    comments = list(shell_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testNestedStringSingleOutside(self):
     code = "'this is \"# not a comment\"'"
-    comments = list(shell_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testNestedStringDoubleOutside(self):
     code = '"this is \'# not a comment\'"'
-    comments = list(shell_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testEscapedSingleQuote(self):
     code = "\\'# this is a comment"
-    comments = list(shell_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(len(comments), 1)
 
     self.assertEqual(comments[0].markup_span.extract(code), "# this is a comment")
@@ -54,7 +58,7 @@ class ShellParserTest(unittest.TestCase):
 
   def testEscapedDoubleQuote(self):
     code = '\\"# this is another comment'
-    comments = list(shell_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 

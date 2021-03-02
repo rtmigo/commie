@@ -3,15 +3,21 @@
 # SPDX-License-Identifier: MIT
 
 import unittest
+from typing import List
 
-from commie.parsers import common, html_parser
+from .. import iter_comments_html
+from ..parsers.common import Comment, UnterminatedCommentError
+
+
+def commentsToList(code:str) -> List[Comment]:
+  return list(iter_comments_html(code))
 
 
 class ShellParserTest(unittest.TestCase):
 
   def testComment(self):
     code = '<!--comment-->'
-    comments = list(html_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -21,7 +27,7 @@ class ShellParserTest(unittest.TestCase):
 
   def testMultilineComment(self):
     code = '<!--multi-line\ncomment-->'
-    comments = list(html_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -31,7 +37,7 @@ class ShellParserTest(unittest.TestCase):
 
   def testTwoSeparateSingleComment(self):
     code = '<!--comment1-->\n<!--comment2-->'
-    comments = list(html_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 2)
 
@@ -45,7 +51,7 @@ class ShellParserTest(unittest.TestCase):
 
   def testLayeredComment(self):
     code = '<!-- comment<!-- -->'
-    comments = list(html_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -55,7 +61,7 @@ class ShellParserTest(unittest.TestCase):
 
   def testNonGreedyComment(self):
     code = '<!--i am a comment--> not a comment -->'
-    comments = list(html_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -65,7 +71,7 @@ class ShellParserTest(unittest.TestCase):
 
   def testSideBySideComment(self):
     code = '<!--comment1--> ... <!--comment2-->'
-    comments = list(html_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 2)
 
@@ -79,10 +85,10 @@ class ShellParserTest(unittest.TestCase):
 
   def testUnterminatedComment(self):
     code = '<!--invalid'
-    with self.assertRaises(common.UnterminatedCommentError):
-      list(html_parser.extract_comments(code))
+    with self.assertRaises(UnterminatedCommentError):
+      commentsToList(code)
 
   def testLonelyTerminator(self):
     code = 'not a comment-->'
-    comments = list(html_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])

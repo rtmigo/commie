@@ -2,17 +2,21 @@
 # SPDX-FileCopyrightText: Copyright (c) 2015 Jean-Ralph Aviles
 # SPDX-License-Identifier: MIT
 
-
 import unittest
+from typing import List
 
-from commie.parsers import ruby_parser
+from commie import iter_comments_ruby, Comment
+
+
+def commentsToList(code:str) -> List[Comment]:
+  return list(iter_comments_ruby(code))
 
 
 class ShellParserTest(unittest.TestCase):
 
   def testComment(self):
     code = '# comment'
-    comments = list(ruby_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -22,27 +26,27 @@ class ShellParserTest(unittest.TestCase):
 
   def testCommentInSingleQuotedString(self):
     code = "'this is # not a comment'"
-    comments = list(ruby_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testCommentInDoubleQuotedString(self):
     code = '"this is # not a comment"'
-    comments = list(ruby_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testNestedStringSingleOutside(self):
     code = "'this is \"# not a comment\"'"
-    comments = list(ruby_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testNestedStringDoubleOutside(self):
     code = '"this is \'# not a comment\'"'
-    comments = list(ruby_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testEscapedSingleQuote(self):
     code = "\\'# this is a comment"
-    comments = list(ruby_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -52,7 +56,7 @@ class ShellParserTest(unittest.TestCase):
 
   def testEscapedDoubleQuote(self):
     code = '\\"# this is a comment'
-    comments = list(ruby_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -62,7 +66,7 @@ class ShellParserTest(unittest.TestCase):
 
   def testDoubleComment(self):
     code = '# this is not # another comment'
-    comments = list(ruby_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -73,7 +77,7 @@ class ShellParserTest(unittest.TestCase):
 
   def testLiteralsSeparatedByComment(self):
     code = r"'This is' # 'a comment'"
-    comments = list(ruby_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -85,7 +89,7 @@ class ShellParserTest(unittest.TestCase):
 
   def testDifferentLiteralsSeparatedByComment(self):
     code = r''''This is' # "a comment"'''
-    comments = list(ruby_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 

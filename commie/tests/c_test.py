@@ -3,15 +3,21 @@
 # SPDX-License-Identifier: MIT
 
 import unittest
+from typing import List
 
-from commie.parsers import c_parser, common
+from .. import iter_comments_c
+from ..parsers.common import Comment, UnterminatedCommentError
+
+
+def commentsToList(code:str) -> List[Comment]:
+  return list(iter_comments_c(code))
 
 
 class CParserTest(unittest.TestCase):
 
   def testSimpleMain(self):
     code = "// this is a comment\nint main() {\nreturn 0;\n}\n"
-    comments = list(c_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -21,7 +27,7 @@ class CParserTest(unittest.TestCase):
 
   def testSingleLineComment(self):
     code = '// single line comment'
-    comments = list(c_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -31,12 +37,12 @@ class CParserTest(unittest.TestCase):
 
   def testSingleLineCommentInStringLiteral(self):
     code = 'char* msg = "// this is not a comment"'
-    comments = list(c_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testMultiLineComment(self):
     code = '/* multiline\ncomment */'
-    comments = list(c_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -46,7 +52,7 @@ class CParserTest(unittest.TestCase):
 
   def testMultiLineCommentWithStars(self):
     code = "/***************/"
-    comments = list(c_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -56,17 +62,17 @@ class CParserTest(unittest.TestCase):
 
   def testMultiLineCommentInStringLiteral(self):
     code = 'char* msg = "/* This is not a\\nmultiline comment */"'
-    comments = list(c_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testMultiLineCommentUnterminated(self):
     code = 'int a = 1; /* Unterminated\\n comment'
-    with self.assertRaises(common.UnterminatedCommentError):
-      list(c_parser.extract_comments(code))
+    with self.assertRaises(UnterminatedCommentError):
+      commentsToList(code)
 
   def testMultipleMultilineComments(self):
     code = '/* abc */ /* 123 */'
-    comments = list(c_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 2)
 
@@ -81,7 +87,7 @@ class CParserTest(unittest.TestCase):
 
   def testStringThenComment(self):
     code = r'"" /* "abc */'
-    comments = list(c_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -100,12 +106,12 @@ class CParserTest(unittest.TestCase):
 
   def testStringEscapedBackslashCharacter(self):
     code = r'"\\"'
-    comments = list(c_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testTwoStringsFollowedByComment(self):
     code = r'"""" // foo'
-    comments = list(c_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -118,7 +124,7 @@ class CParserTest(unittest.TestCase):
     int main(){return 0;}
     // and ended it here */'''
 
-    comments = list(c_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 2)
 
@@ -135,7 +141,7 @@ class CParserTest(unittest.TestCase):
     code = '''/*// here
     int main(){return 0;}
     */// and ended it here */'''
-    comments = list(c_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 2)
 

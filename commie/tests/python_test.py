@@ -3,15 +3,20 @@
 # SPDX-License-Identifier: MIT
 
 import unittest
+from typing import List
 
-from commie.parsers import python_parser
+from .. import iter_comments_python, Comment
+
+
+def commentsToList(code:str) -> List[Comment]:
+  return list(iter_comments_python(code))
 
 
 class PythonParserTest(unittest.TestCase):
 
   def testComment(self):
     code = '# comment'
-    comments = list(python_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -21,27 +26,27 @@ class PythonParserTest(unittest.TestCase):
 
   def testCommentInSingleQuotedString(self):
     code = "'this is # not a comment'"
-    comments = list(python_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testCommentInDoubleQuotedString(self):
     code = '"this is # not a comment"'
-    comments = list(python_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testNestedStringSingleOutside(self):
     code = "'this is \"# not a comment\"'"
-    comments = list(python_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testNestedStringDoubleOutside(self):
     code = '"this is \'# not a comment\'"'
-    comments = list(python_parser.extract_comments(code))
+    comments = commentsToList(code)
     self.assertEqual(comments, [])
 
   def testEscapedSingleQuote(self):
     code = "\\'# this is a comment"
-    comments = list(python_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 
@@ -51,7 +56,7 @@ class PythonParserTest(unittest.TestCase):
 
   def testEscapedDoubleQuote(self):
     code = '\\"# this is another comment'
-    comments = list(python_parser.extract_comments(code))
+    comments = commentsToList(code)
 
     self.assertEqual(len(comments), 1)
 

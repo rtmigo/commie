@@ -3,8 +3,8 @@
 # SPDX-License-Identifier: MIT
 
 import unittest
+
 from commie import js_parser, common
-from commie.common import Comment
 
 
 class JsParserTest(unittest.TestCase):
@@ -13,55 +13,60 @@ class JsParserTest(unittest.TestCase):
     code = '// single line comment'
     comments = list(js_parser.extract_comments(code))
 
-    expected = [Comment(" single line comment", 0, len(code), False)]
-    self.assertEqual(comments, expected)
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.substring(code), "// single line comment")
+    self.assertEqual(comments[0].text_span.substring(code), " single line comment")
+    self.assertEqual(comments[0].multiline, False)
 
   def testLineCommentInSingleQuotedLiteral(self):
     code = "msg = '// this is not a comment'"
     comments = list(js_parser.extract_comments(code))
-    self.assertEqual(comments, [])
+    self.assertEqual(len(comments), 0)
 
   def testLineCommentInDoubleQuotedLiteral(self):
     code = 'msg = "// this is not a comment"'
     comments = list(js_parser.extract_comments(code))
-    self.assertEqual(comments, [])
+    self.assertEqual(len(comments), 0)
 
   def testMultiLineComment(self):
     code = '/* multiline\ncomment */'
     comments = list(js_parser.extract_comments(code))
 
-    expected = [Comment(" multiline\ncomment ", 0, 23, True)]
+    self.assertEqual(len(comments), 1)
+    self.assertEqual(comments[0].markup_span.substring(code), '/* multiline\ncomment */')
+    self.assertEqual(comments[0].text_span.substring(code), " multiline\ncomment ")
+    self.assertEqual(comments[0].multiline, True)
 
-    first = comments[0]
-    self.assertEqual(code[first.start:first.end + 1], code)
-
-    self.assertEqual(comments, expected)
 
   def testMultiLineCommentWithStars(self):
     code = "/***************/"
     comments = list(js_parser.extract_comments(code))
-    expected = [Comment("*************", 0, 17, True)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 1)
+    self.assertEqual(comments[0].markup_span.substring(code), '/***************/')
+    self.assertEqual(comments[0].text_span.substring(code), "*************")
+    self.assertEqual(comments[0].multiline, True)
 
   def testMultiLineCommentInSingleLiteral(self):
     code = "msg = '/* This is not a\\nmultiline comment */'"
     comments = list(js_parser.extract_comments(code))
-    self.assertEqual(comments, [])
+    self.assertEqual(len(comments), 0)
 
   def testMultiLineCommentInDoubleLiteral(self):
     code = 'msg = "/* This is not a\\nmultiline comment */"'
     comments = list(js_parser.extract_comments(code))
-    self.assertEqual(comments, [])
+    self.assertEqual(len(comments), 0)
 
   def testMultiLineCommentUnterminated(self):
     code = 'a = 1 /* Unterminated\\n comment'
     with self.assertRaises(common.UnterminatedCommentError):
-      comments = list(js_parser.extract_comments(code))
+      list(js_parser.extract_comments(code))
 
   def testMultiple(self):
     code = """
 
-    /* 
+    /*
      * this is a fancy comment
      * one more line of it
      */
@@ -74,15 +79,6 @@ class JsParserTest(unittest.TestCase):
 
     comments = list(js_parser.extract_comments(code))
 
-    self.assertEqual(comments[0].start, 6)
-    self.assertEqual(comments[0].end, 75)
+    self.assertEqual(len(comments), 2)
     self.assertEqual(comments[0].multiline, True)
-
-    c = comments[0]
-    txt = code[c.start:c.end]
-    self.assertEqual(txt[0],"/")
-    self.assertEqual(txt[-1],"/")
-
-    self.assertEqual(comments[1].start, 118)
-    self.assertEqual(comments[1].end, 126)
     self.assertEqual(comments[1].multiline, False)

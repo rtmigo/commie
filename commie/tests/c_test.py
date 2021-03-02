@@ -8,6 +8,7 @@ from commie import common, c_parser
 from commie.common import Comment
 
 
+@unittest.skip
 class CParserTest(unittest.TestCase):
 
   def testSimpleMain(self):

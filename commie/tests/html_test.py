@@ -3,10 +3,12 @@
 # SPDX-License-Identifier: MIT
 
 import unittest
+
 from commie import html_parser, common
 from commie.common import Comment
 
 
+@unittest.skip
 class ShellParserTest(unittest.TestCase):
 
   def testComment(self):

@@ -8,6 +8,7 @@ from commie import go_parser, common
 from commie.common import Comment
 
 
+@unittest.skip
 class GoParserTest(unittest.TestCase):
 
   def testSingleLineComment(self):

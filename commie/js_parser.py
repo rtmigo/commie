@@ -2,10 +2,11 @@
 # SPDX-FileCopyrightText: Copyright (c) 2015 Jean-Ralph Aviles
 # SPDX-License-Identifier: MIT
 
-from typing import Iterable
+from typing import Iterable, Optional
 
 from commie import common
-from commie.common import Comment
+from commie.common import Comment, Span
+
 
 def extract_comments(code: str) -> Iterable[Comment]:
   """Extracts a list of comments from the given Javascript source code.
@@ -37,9 +38,11 @@ def extract_comments(code: str) -> Iterable[Comment]:
   FOUND_SLASH = 1
 
   state = WAITING_FOR_COMMENT
-  current_comment_text = ''
+  #current_comment_text = ''
 
-  comment_start_pos = None
+  markup_start_pos = None
+  text_start_pos:Optional[int] = 0
+  text_length:Optional[int] = 0
 
   quote = None
   position = 0
@@ -59,47 +62,47 @@ def extract_comments(code: str) -> Iterable[Comment]:
       # determine if single or multi-line comment.
       if char == '/':
         state = IN_SINGLE_LINE_COMMENT
-        comment_start_pos = position - 1  # we are at second char of "//"
+        markup_start_pos = position - 1  # we are at second char of "//"
+        text_start_pos=position+1
       elif char == '*':
         state = IN_MULTI_LINE_COMMENT
-        comment_start_pos = position - 1  # we are at second char of "/*"
+        markup_start_pos = position - 1  # we are at second char of "/*"
+        text_start_pos=position+1
       else:
         state = WAITING_FOR_COMMENT
     elif state == IN_SINGLE_LINE_COMMENT:
       # In single-line comment, read characters until EOL.
       if char == '\n':
         yield common.Comment(
-          text=current_comment_text,
-          start=comment_start_pos,
-          end=position+1,
+          text_span=Span(text_start_pos, text_start_pos+text_length),
+          markup_span=Span(markup_start_pos, position+1),
           multiline=False)
-        current_comment_text = ''
+        text_length=0
         state = WAITING_FOR_COMMENT
       else:
-        current_comment_text += char
+        text_length+=1
     elif state == IN_MULTI_LINE_COMMENT:
       # In multi-line comment, add characters until '*' is
       # encountered.
       if char == '*':
         state = IN_MULTI_LINE_COMMENT_ASTERISK
       else:
-        current_comment_text += char
+        text_length+=1
     elif state == IN_MULTI_LINE_COMMENT_ASTERISK:
       # In multi-line comment with asterisk found. Determine if
       # comment is ending.
       if char == '/':
         yield Comment(
-          text=current_comment_text,
-          start=comment_start_pos,
-          end=position+1,
+          text_span=Span(text_start_pos, text_start_pos+text_length),
+          markup_span=Span(markup_start_pos, position+1),
           multiline=True)
-        current_comment_text = ''
+        text_length=0
         state = WAITING_FOR_COMMENT
       else:
-        current_comment_text += '*'
+        text_length+=1
         # Care for multiple '*' in a row
         if char != '*':
-          current_comment_text += char
+          text_length+=1
           state = IN_MULTI_LINE_COMMENT
     elif state == IN_STRING:
       # In string literal, expect literal end or escape character.
@@ -118,8 +121,7 @@ def extract_comments(code: str) -> Iterable[Comment]:
 
   if state == IN_SINGLE_LINE_COMMENT:
     yield common.Comment(
-      text=current_comment_text,
-      start=comment_start_pos,
-      end=position+1,
+      text_span=Span(text_start_pos, text_start_pos+text_length),
+      markup_span=Span(markup_start_pos, position+1),
       multiline=False)
 

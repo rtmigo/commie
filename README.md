@@ -40,17 +40,16 @@ for comment in commie.iter_comments_file(Path("/path/to/source.cpp")):
 ```python
 # in this example we'll parse a Go source file
 
-from pathlib import Path
 import commie
 
-source_code_in_golang=loadSomehow()
+source_code_in_golang=loadSomehow(...)
 
 for comment in commie.iter_comments_go(source_code_in_golang):
   # ... process comment ...
   pass
 ```
 
-# Find comments in a string loaded from file
+# Find comments in string from file
 
 Method `commie.iter_comments` will try to guess the file format from the provided filename
 

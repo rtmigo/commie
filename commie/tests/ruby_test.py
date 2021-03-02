@@ -6,18 +6,19 @@
 import unittest
 
 from commie import ruby_parser
-from commie.common import Comment
 
 
-@unittest.skip
 class ShellParserTest(unittest.TestCase):
 
   def testComment(self):
     code = '# comment'
     comments = list(ruby_parser.extract_comments(code))
-    expected = [Comment(" comment", 0, len(code), False)]
-    self.assertEqual(comments, expected)
-    self.assertEqual(code[comments[0].end-1], 't')
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.substring(code), '# comment')
+    self.assertEqual(comments[0].text_span.substring(code), " comment")
+    self.assertEqual(comments[0].multiline, False)
 
   def testCommentInSingleQuotedString(self):
     code = "'this is # not a comment'"
@@ -42,29 +43,52 @@ class ShellParserTest(unittest.TestCase):
   def testEscapedSingleQuote(self):
     code = "\\'# this is a comment"
     comments = list(ruby_parser.extract_comments(code))
-    expected = [Comment(" this is a comment", 2, 21, False)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.substring(code), '# this is a comment')
+    self.assertEqual(comments[0].text_span.substring(code), " this is a comment")
+    self.assertEqual(comments[0].multiline, False)
 
   def testEscapedDoubleQuote(self):
     code = '\\"# this is a comment'
     comments = list(ruby_parser.extract_comments(code))
-    expected = [Comment(" this is a comment", 2, 21, False)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.substring(code), '# this is a comment')
+    self.assertEqual(comments[0].text_span.substring(code), " this is a comment")
+    self.assertEqual(comments[0].multiline, False)
 
   def testDoubleComment(self):
     code = '# this is not # another comment'
     comments = list(ruby_parser.extract_comments(code))
-    expected = [Comment(" this is not # another comment", 0, 31, False)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.substring(code), '# this is not # another comment')
+    self.assertEqual(comments[0].text_span.substring(code), ' this is not # another comment')
+    self.assertEqual(comments[0].multiline, False)
+
 
   def testLiteralsSeparatedByComment(self):
     code = r"'This is' # 'a comment'"
     comments = list(ruby_parser.extract_comments(code))
-    expected = [Comment(" 'a comment'", 10, 23, False)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.substring(code), "# 'a comment'")
+    self.assertEqual(comments[0].text_span.substring(code), " 'a comment'")
+    self.assertEqual(comments[0].multiline, False)
+
+
 
   def testDifferentLiteralsSeparatedByComment(self):
     code = r''''This is' # "a comment"'''
     comments = list(ruby_parser.extract_comments(code))
-    expected = [Comment(' "a comment"', 10, 23, False)]
-    self.assertEqual(comments, expected)
+
+    self.assertEqual(len(comments), 1)
+
+    self.assertEqual(comments[0].markup_span.substring(code), '# "a comment"')
+    self.assertEqual(comments[0].text_span.substring(code), ' "a comment"')
+    self.assertEqual(comments[0].multiline, False)

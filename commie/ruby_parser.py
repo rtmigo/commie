@@ -5,8 +5,8 @@
 import re
 from typing import Iterable
 
-from commie import common
 from commie.common import Comment
+from commie.helper import matchGroupToComment
 
 
 def extract_comments(rubyCode: str) -> Iterable[Comment]:
@@ -34,9 +34,6 @@ def extract_comments(rubyCode: str) -> Iterable[Comment]:
     span = match.span(0)
 
     if kind == "single":
-      yield common.Comment(
-        match.group("single_content"),
-        span[0], span[1],
-        multiline=False)
+      yield matchGroupToComment(match, "single_content", False)
 
   return comments

@@ -52,19 +52,3 @@ def extract_comments(htmlCode: str) -> Iterable[Comment]:
     elif kind == "error":
       raise common.UnterminatedCommentError()
 
-
-    # kind = match.lastgroup
-    # span = match.span(0)
-    #
-    # if kind == "single":
-    #   yield common.Comment(
-    #     match.group("single_content"),
-    #     span[0], span[1],
-    #     multiline=False)
-    # elif kind == "multi":
-    #   yield common.Comment(
-    #     match.group("multi_content"),
-    #     span[0], span[1],
-    #     multiline=False)
-    # elif kind == "error":
-    #   raise common.UnterminatedCommentError()

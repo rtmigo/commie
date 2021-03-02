@@ -9,7 +9,7 @@ Differences from the original:
 
 | **comment_parser** | **commie** |
 |--------------------|------------|
-|returned only a line number|returns exact positions where the comment starts and ends (just like regular string search)|
-|returned only the text of a comment|respects markup as well, making it possible to remove or replace the comment|
-|depends on [python-magic](https://pypi.org/project/python-magic) requiring an optional installation of binaries|does not have this dependency|
+|Returned only a line number|Returns positions where the comment starts and ends. Just like regular string search|
+|Returned only the text of a comment|Respects markup as well, making it possible to remove or replace the entire comment|
+|Depends on [python-magic](https://pypi.org/project/python-magic) requiring an optional installation of binaries|Does not have this dependency|
 

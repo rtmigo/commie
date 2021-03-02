@@ -5,7 +5,7 @@
 [![PyPI license](https://img.shields.io/pypi/l/commie.svg)](https://pypi.python.org/pypi/commie/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/commie.svg)](https://pypi.python.org/pypi/commie/)
 
-# Usage 
+# Find comments in a file
 
 ```python
 from pathlib import Path
@@ -23,8 +23,7 @@ for comment in commie.iter_comments_file(Path("/path/to/source.cpp")):
 
 ```
 
-
-## Language-specific functions
+# Find comments in a string
 
 | **Method** | **Works for** |
 |--------------------|------------|
@@ -38,8 +37,6 @@ for comment in commie.iter_comments_file(Path("/path/to/source.cpp")):
 | `commie.iter_comments_css` | CSS |
 | `commie.iter_comments_sass` | SASS |
 
-### Example
-
 ```python
 # in this example we'll parse a Go source file
 
@@ -49,15 +46,26 @@ import commie
 sourceCode=Path("/path/to/mycode.go").read_text()
 
 for comment in commie.iter_comments_go(sourceCode):
- 
-  # comment code: "/* sample */"
-  print("Comment inner text:", comment.text)
-  print("Comment text location:", comment.text_span.start, comment.text_span.end)
-  
-  # comment text: " sample "
-  print("Comment code:", comment.code)
-  print("Comment code location:", comment.code_span.start, comment.code_span.end)
+  # ... process comment ...
+  pass
+```
 
+# Find comments in a string loaded from file
+
+Method `commie.iter_comments` will try to guess the file format from the provided filename
+
+```python
+# in this example we'll parse a Go source file
+
+from pathlib import Path
+import commie
+
+filename = "/path/to/mycode.go"
+sourceCode=Path(filename).read_text()
+
+for comment in commie.iter_comments(sourceCode, filename):
+  # ... process comment ...
+  pass
 ```
 
 # Forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser) 

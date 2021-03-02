@@ -65,3 +65,4 @@ class ShellParserTest(unittest.TestCase):
     comments = list(ruby_parser.extract_comments(code))
     expected = [Comment(' "a comment"', 10, 23, False)]
     self.assertEqual(comments, expected)
+    

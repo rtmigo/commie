@@ -43,9 +43,9 @@ for comment in commie.iter_comments_file(Path("/path/to/source.cpp")):
 from pathlib import Path
 import commie
 
-sourceCode=Path("/path/to/mycode.go").read_text()
+source_code_in_golang=loadSomehow()
 
-for comment in commie.iter_comments_go(sourceCode):
+for comment in commie.iter_comments_go(source_code_in_golang):
   # ... process comment ...
   pass
 ```
@@ -61,9 +61,9 @@ from pathlib import Path
 import commie
 
 filename = "/path/to/mycode.go"
-sourceCode=Path(filename).read_text()
+source_code=Path(filename).read_text()
 
-for comment in commie.iter_comments(sourceCode, filename):
+for comment in commie.iter_comments(source_code, filename):
   # ... process comment ...
   pass
 ```

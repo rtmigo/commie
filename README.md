@@ -40,7 +40,7 @@ for comment in commie.iter_comments_file(Path("/path/to/source.cpp")):
 ```python
 import commie
 
-source_code_in_golang = ...
+source_code_in_golang:str = ...
 
 for comment in commie.iter_comments_go(source_code_in_golang):
   # ... process comment ...
@@ -55,8 +55,8 @@ Method `commie.iter_comments` will try to guess the file format from the provide
 from pathlib import Path
 import commie
 
-filename = "/path/to/mycode.go"
-source_code=Path(filename).read_text()
+filename:str = "/path/to/mycode.go"
+source_code:str = Path(filename).read_text()
 
 for comment in commie.iter_comments(source_code, filename):
   # ... process comment ...

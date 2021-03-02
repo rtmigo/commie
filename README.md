@@ -31,7 +31,7 @@ for comment in commie.iter_comments_go(sourceCode):
 | **Method** | **Works for** |
 |--------------------|------------|
 | `commie.iter_comments_c`| C99+, C++, Objective-C, C#, Java |
-| `commie.iter_comments_js`| JavaScript, Dart |
+| `commie.iter_comments_js`| JavaScript, Dart, TypeScript |
 | `commie.iter_comments_go`|Go|
 | `commie.iter_comments_ruby` | Ruby |
 | `commie.iter_comments_python` | Python |

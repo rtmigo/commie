@@ -38,6 +38,7 @@ for comment in commie.iter_comments_go(sourceCode):
 | `commie.iter_comments_shell` | Bash, Sh |
 | `commie.iter_comments_html` | HTML, XML, SGML |
 | `commie.iter_comments_css` | CSS |
+| `commie.iter_comments_sass` | SASS |
 
 
 # Forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser) 

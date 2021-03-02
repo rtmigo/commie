@@ -17,7 +17,7 @@ class PosToken(NamedTuple):
 
 
 def postokenize(infile: io.BytesIO) -> Iterable[PosToken]:
-  # based on https://stackoverflow.com/a/62761208 CC BY-SA 4.0
+  # based on https://stackoverflow.com/a/62761208 (CC BY-SA 4.0)
 
   # Used to track starting position of each line.
   # Note that tokenize starts line numbers at 1 and column numbers at 0

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2021 Art Galkin <ortemeo@gmail.com>
+# SPDX-License-Identifier: MIT
+
 import re
 
 from commie.common import Comment, Span

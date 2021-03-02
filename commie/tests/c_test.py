@@ -21,7 +21,7 @@ class CParserTest(unittest.TestCase):
 
     self.assertEqual(len(comments), 1)
 
-    self.assertEqual(comments[0].markup_span.extract(code), "// this is a comment")
+    self.assertEqual(comments[0].code_span.extract(code), "// this is a comment")
     self.assertEqual(comments[0].text_span.extract(code), " this is a comment")
     self.assertEqual(comments[0].multiline, False)
 
@@ -31,7 +31,7 @@ class CParserTest(unittest.TestCase):
 
     self.assertEqual(len(comments), 1)
 
-    self.assertEqual(comments[0].markup_span.extract(code), '// single line comment')
+    self.assertEqual(comments[0].code_span.extract(code), '// single line comment')
     self.assertEqual(comments[0].text_span.extract(code), " single line comment")
     self.assertEqual(comments[0].multiline, False)
 
@@ -46,7 +46,7 @@ class CParserTest(unittest.TestCase):
 
     self.assertEqual(len(comments), 1)
 
-    self.assertEqual(comments[0].markup_span.extract(code), '/* multiline\ncomment */')
+    self.assertEqual(comments[0].code_span.extract(code), '/* multiline\ncomment */')
     self.assertEqual(comments[0].text_span.extract(code), " multiline\ncomment ")
     self.assertEqual(comments[0].multiline, True)
 
@@ -56,7 +56,7 @@ class CParserTest(unittest.TestCase):
 
     self.assertEqual(len(comments), 1)
 
-    self.assertEqual(comments[0].markup_span.extract(code), '/***************/')
+    self.assertEqual(comments[0].code_span.extract(code), '/***************/')
     self.assertEqual(comments[0].text_span.extract(code), "*************")
     self.assertEqual(comments[0].multiline, True)
 
@@ -76,11 +76,11 @@ class CParserTest(unittest.TestCase):
 
     self.assertEqual(len(comments), 2)
 
-    self.assertEqual(comments[0].markup_span.extract(code), '/* abc */')
+    self.assertEqual(comments[0].code_span.extract(code), '/* abc */')
     self.assertEqual(comments[0].text_span.extract(code), " abc ")
     self.assertEqual(comments[0].multiline, True)
 
-    self.assertEqual(comments[1].markup_span.extract(code), '/* 123 */')
+    self.assertEqual(comments[1].code_span.extract(code), '/* 123 */')
     self.assertEqual(comments[1].text_span.extract(code), " 123 ")
     self.assertEqual(comments[1].multiline, True)
 
@@ -91,7 +91,7 @@ class CParserTest(unittest.TestCase):
 
     self.assertEqual(len(comments), 1)
 
-    self.assertEqual(comments[0].markup_span.extract(code), '/* "abc */')
+    self.assertEqual(comments[0].code_span.extract(code), '/* "abc */')
     self.assertEqual(comments[0].text_span.extract(code), ' "abc ')
     self.assertEqual(comments[0].multiline, True)
 
@@ -115,7 +115,7 @@ class CParserTest(unittest.TestCase):
 
     self.assertEqual(len(comments), 1)
 
-    self.assertEqual(comments[0].markup_span.extract(code), '// foo')
+    self.assertEqual(comments[0].code_span.extract(code), '// foo')
     self.assertEqual(comments[0].text_span.extract(code), " foo")
     self.assertEqual(comments[0].multiline, False)
 
@@ -128,11 +128,11 @@ class CParserTest(unittest.TestCase):
 
     self.assertEqual(len(comments), 2)
 
-    self.assertEqual(comments[0].markup_span.extract(code), '// What if i start a /* here')
+    self.assertEqual(comments[0].code_span.extract(code), '// What if i start a /* here')
     self.assertEqual(comments[0].text_span.extract(code), " What if i start a /* here")
     self.assertEqual(comments[0].multiline, False)
 
-    self.assertEqual(comments[1].markup_span.extract(code), '// and ended it here */')
+    self.assertEqual(comments[1].code_span.extract(code), '// and ended it here */')
     self.assertEqual(comments[1].text_span.extract(code), " and ended it here */")
     self.assertEqual(comments[1].multiline, False)
 
@@ -145,10 +145,10 @@ class CParserTest(unittest.TestCase):
 
     self.assertEqual(len(comments), 2)
 
-    self.assertEqual(comments[0].markup_span.extract(code), "/*// here\n    int main(){return 0;}\n    */")
+    self.assertEqual(comments[0].code_span.extract(code), "/*// here\n    int main(){return 0;}\n    */")
     self.assertEqual(comments[0].text_span.extract(code), "// here\n    int main(){return 0;}\n    ")
     self.assertEqual(comments[0].multiline, True)
 
-    self.assertEqual(comments[1].markup_span.extract(code), '// and ended it here */')
+    self.assertEqual(comments[1].code_span.extract(code), '// and ended it here */')
     self.assertEqual(comments[1].text_span.extract(code), " and ended it here */")
     self.assertEqual(comments[1].multiline, False)

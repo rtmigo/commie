@@ -11,22 +11,20 @@
 from pathlib import Path
 import commie
 
-# in this example we'll parse a Go source file
-sourceCode=Path("/path/to/mycode.go").read_text()
+for comment in commie.iter_comments_file(Path("/path/to/source.cpp")):
 
-for comment in commie.iter_comments_go(sourceCode):
- 
   # comment code: "/* sample */"
-  print("Comment inner text:", comment.text_span.extract(sourceCode))
+  print("Comment inner text:", comment.text)
   print("Comment text location:", comment.text_span.start, comment.text_span.end)
-  
+
   # comment text: " sample "
-  print("Comment code:", comment.markup_span.extract(sourceCode))
-  print("Comment code location:", comment.markup_span.start, comment.markup_span.end)
+  print("Comment code:", comment.code)
+  print("Comment code location:", comment.code_span.start, comment.code_span.end)
 
 ```
 
-# Parsers
+
+## Language-specific functions
 
 | **Method** | **Works for** |
 |--------------------|------------|
@@ -40,6 +38,27 @@ for comment in commie.iter_comments_go(sourceCode):
 | `commie.iter_comments_css` | CSS |
 | `commie.iter_comments_sass` | SASS |
 
+### Example
+
+```python
+# in this example we'll parse a Go source file
+
+from pathlib import Path
+import commie
+
+sourceCode=Path("/path/to/mycode.go").read_text()
+
+for comment in commie.iter_comments_go(sourceCode):
+ 
+  # comment code: "/* sample */"
+  print("Comment inner text:", comment.text)
+  print("Comment text location:", comment.text_span.start, comment.text_span.end)
+  
+  # comment text: " sample "
+  print("Comment code:", comment.code)
+  print("Comment code location:", comment.code_span.start, comment.code_span.end)
+
+```
 
 # Forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser) 
 

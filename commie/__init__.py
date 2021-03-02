@@ -1,3 +1,4 @@
+from .detector import iter_comments, iter_comments_file
 from .parsers.c_parser import extract_comments as iter_comments_c, \
   extract_comments as iter_comments_sass
 from .parsers.common import Comment, Span, FileError, UnterminatedCommentError

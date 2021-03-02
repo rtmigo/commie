@@ -8,7 +8,7 @@ from commie.parsers import common
 from commie.parsers.common import Comment, Span
 
 
-def extract_comments(code: str) -> Iterable[Comment]:
+def extract_comments(source: str) -> Iterable[Comment]:
   """Extracts a list of comments from the given Javascript source code.
 
   Comments are represented with the Comment class found in the common module.
@@ -21,7 +21,7 @@ def extract_comments(code: str) -> Iterable[Comment]:
   source code.
 
   Args:
-    code: String containing code to extract comments from.
+    source: String containing code to extract comments from.
   Returns:
     Python list of common.Comment in the order that they appear in the code.
   Raises:
@@ -47,7 +47,7 @@ def extract_comments(code: str) -> Iterable[Comment]:
   quote = None
   position = 0
 
-  for position, char in enumerate(code):
+  for position, char in enumerate(source):
 
     if state == WAITING_FOR_COMMENT:
       # Waiting for comment start character or beginning of
@@ -74,8 +74,9 @@ def extract_comments(code: str) -> Iterable[Comment]:
       # In single-line comment, read characters until EOL.
       if char == '\n':
         yield common.Comment(
+          source,
           text_span=Span(text_start_pos, text_start_pos+text_length),
-          markup_span=Span(markup_start_pos, position+1),
+          code_span=Span(markup_start_pos, position + 1),
           multiline=False)
         text_length=0
         state = WAITING_FOR_COMMENT
@@ -93,8 +94,9 @@ def extract_comments(code: str) -> Iterable[Comment]:
       # comment is ending.
       if char == '/':
         yield Comment(
+          source,
           text_span=Span(text_start_pos, text_start_pos+text_length),
-          markup_span=Span(markup_start_pos, position+1),
+          code_span=Span(markup_start_pos, position + 1),
           multiline=True)
         text_length=0
         state = WAITING_FOR_COMMENT
@@ -121,7 +123,8 @@ def extract_comments(code: str) -> Iterable[Comment]:
 
   if state == IN_SINGLE_LINE_COMMENT:
     yield common.Comment(
+      source,
       text_span=Span(text_start_pos, text_start_pos+text_length),
-      markup_span=Span(markup_start_pos, position+1),
+      code_span=Span(markup_start_pos, position + 1),
       multiline=False)
 

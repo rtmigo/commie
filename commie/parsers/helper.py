@@ -8,6 +8,7 @@ from commie.parsers.common import Comment, Span
 
 def matchGroupToComment(match:re.Match, groupName:str, multiline:bool) -> Comment:
 
+
   fullSpan = match.span()
 
   fullText = match.group(0)
@@ -16,6 +17,7 @@ def matchGroupToComment(match:re.Match, groupName:str, multiline:bool) -> Commen
   assert textStart>=0
 
   return Comment(
+    match.string,
     text_span=Span(fullSpan[0]+textStart, fullSpan[0]+textStart+len(innerText)),
-    markup_span=Span(fullSpan[0], fullSpan[1]),
+    code_span=Span(fullSpan[0], fullSpan[1]),
     multiline=multiline)

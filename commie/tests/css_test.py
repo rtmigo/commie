@@ -21,7 +21,7 @@ class CssParserTest(unittest.TestCase):
 
     self.assertEqual(len(comments), 1)
 
-    self.assertEqual(comments[0].markup_span.extract(code), "/* i am\n a comment! */")
+    self.assertEqual(comments[0].code_span.extract(code), "/* i am\n a comment! */")
     self.assertEqual(comments[0].text_span.extract(code), " i am\n a comment! ")
     self.assertEqual(comments[0].multiline, True)
 
@@ -31,7 +31,7 @@ class CssParserTest(unittest.TestCase):
 
     self.assertEqual(len(comments), 1)
 
-    self.assertEqual(comments[0].markup_span.extract(code), "/* /* i am a comment! */")
+    self.assertEqual(comments[0].code_span.extract(code), "/* /* i am a comment! */")
     self.assertEqual(comments[0].text_span.extract(code), " /* i am a comment! ")
     self.assertEqual(comments[0].multiline, True)
 
@@ -41,7 +41,7 @@ class CssParserTest(unittest.TestCase):
 
     self.assertEqual(len(comments), 1)
 
-    self.assertEqual(comments[0].markup_span.extract(code), "/* i am a comment! */")
+    self.assertEqual(comments[0].code_span.extract(code), "/* i am a comment! */")
     self.assertEqual(comments[0].text_span.extract(code), " i am a comment! ")
     self.assertEqual(comments[0].multiline, True)
 

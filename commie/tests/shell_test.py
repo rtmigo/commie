@@ -18,7 +18,7 @@ class ShellParserTest(unittest.TestCase):
     comments = commentsToList(code)
     self.assertEqual(len(comments), 1)
 
-    self.assertEqual(comments[0].markup_span.extract(code), '# comment')
+    self.assertEqual(comments[0].code_span.extract(code), '# comment')
     self.assertEqual(comments[0].text_span.extract(code), " comment")
     self.assertEqual(comments[0].multiline, False)
 
@@ -52,7 +52,7 @@ class ShellParserTest(unittest.TestCase):
     comments = commentsToList(code)
     self.assertEqual(len(comments), 1)
 
-    self.assertEqual(comments[0].markup_span.extract(code), "# this is a comment")
+    self.assertEqual(comments[0].code_span.extract(code), "# this is a comment")
     self.assertEqual(comments[0].text_span.extract(code), " this is a comment")
     self.assertEqual(comments[0].multiline, False)
 
@@ -62,7 +62,7 @@ class ShellParserTest(unittest.TestCase):
 
     self.assertEqual(len(comments), 1)
 
-    self.assertEqual(comments[0].markup_span.extract(code), "# this is another comment")
+    self.assertEqual(comments[0].code_span.extract(code), "# this is another comment")
     self.assertEqual(comments[0].text_span.extract(code), " this is another comment")
     self.assertEqual(comments[0].multiline, False)
 

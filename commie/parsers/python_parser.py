@@ -55,8 +55,9 @@ def extract_comments(code: str) -> Iterable[Comment]:
   for token in postokenize(io.BytesIO(code.encode())):
     if token.tokenType == tokenize.COMMENT:
       yield Comment(
+        code,
         text_span=Span(token.start+1, token.end),
-        markup_span=Span(token.start, token.end),
+        code_span=Span(token.start, token.end),
         multiline=False
       )
 

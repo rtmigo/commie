@@ -31,7 +31,6 @@ def extract_comments(rubyCode: str) -> Iterable[Comment]:
   comments = []
   for match in compiled.finditer(rubyCode):
     kind = match.lastgroup
-    span = match.span(0)
 
     if kind == "single":
       yield matchGroupToComment(match, "single_content", False)

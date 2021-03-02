@@ -7,7 +7,7 @@
 
 Native Python package for extracting source code comments.
 
-Supports different programming languages [(see list)](#Find-comments-in-a-string).
+Supports multiple programming languages [(see list)](#Find-comments-in-a-string).
 
 
 

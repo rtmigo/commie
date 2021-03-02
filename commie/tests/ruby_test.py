@@ -20,8 +20,8 @@ class ShellParserTest(unittest.TestCase):
 
 		self.assertEqual(len(comments), 1)
 
-		self.assertEqual(comments[0].code_span.extract(code), '# comment')
-		self.assertEqual(comments[0].text_span.extract(code), " comment")
+		self.assertEqual(comments[0].code, '# comment')
+		self.assertEqual(comments[0].text, " comment")
 		self.assertEqual(comments[0].multiline, False)
 
 	def testCommentInSingleQuotedString(self):
@@ -50,8 +50,8 @@ class ShellParserTest(unittest.TestCase):
 
 		self.assertEqual(len(comments), 1)
 
-		self.assertEqual(comments[0].code_span.extract(code), '# this is a comment')
-		self.assertEqual(comments[0].text_span.extract(code), " this is a comment")
+		self.assertEqual(comments[0].code, '# this is a comment')
+		self.assertEqual(comments[0].text, " this is a comment")
 		self.assertEqual(comments[0].multiline, False)
 
 	def testEscapedDoubleQuote(self):
@@ -60,8 +60,8 @@ class ShellParserTest(unittest.TestCase):
 
 		self.assertEqual(len(comments), 1)
 
-		self.assertEqual(comments[0].code_span.extract(code), '# this is a comment')
-		self.assertEqual(comments[0].text_span.extract(code), " this is a comment")
+		self.assertEqual(comments[0].code, '# this is a comment')
+		self.assertEqual(comments[0].text, " this is a comment")
 		self.assertEqual(comments[0].multiline, False)
 
 	def testDoubleComment(self):
@@ -70,8 +70,8 @@ class ShellParserTest(unittest.TestCase):
 
 		self.assertEqual(len(comments), 1)
 
-		self.assertEqual(comments[0].code_span.extract(code), '# this is not # another comment')
-		self.assertEqual(comments[0].text_span.extract(code), ' this is not # another comment')
+		self.assertEqual(comments[0].code, '# this is not # another comment')
+		self.assertEqual(comments[0].text, ' this is not # another comment')
 		self.assertEqual(comments[0].multiline, False)
 
 	def testLiteralsSeparatedByComment(self):
@@ -80,8 +80,8 @@ class ShellParserTest(unittest.TestCase):
 
 		self.assertEqual(len(comments), 1)
 
-		self.assertEqual(comments[0].code_span.extract(code), "# 'a comment'")
-		self.assertEqual(comments[0].text_span.extract(code), " 'a comment'")
+		self.assertEqual(comments[0].code, "# 'a comment'")
+		self.assertEqual(comments[0].text, " 'a comment'")
 		self.assertEqual(comments[0].multiline, False)
 
 	def testDifferentLiteralsSeparatedByComment(self):
@@ -90,6 +90,6 @@ class ShellParserTest(unittest.TestCase):
 
 		self.assertEqual(len(comments), 1)
 
-		self.assertEqual(comments[0].code_span.extract(code), '# "a comment"')
-		self.assertEqual(comments[0].text_span.extract(code), ' "a comment"')
+		self.assertEqual(comments[0].code, '# "a comment"')
+		self.assertEqual(comments[0].text, ' "a comment"')
 		self.assertEqual(comments[0].multiline, False)

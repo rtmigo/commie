@@ -21,8 +21,8 @@ class HtmlParserTest(unittest.TestCase):
 
 		self.assertEqual(len(comments), 1)
 
-		self.assertEqual(comments[0].code_span.extract(code), "<!--comment-->")
-		self.assertEqual(comments[0].text_span.extract(code), "comment")
+		self.assertEqual(comments[0].code, "<!--comment-->")
+		self.assertEqual(comments[0].text, "comment")
 		self.assertEqual(comments[0].multiline, False)
 
 	def testMultilineComment(self):
@@ -31,8 +31,8 @@ class HtmlParserTest(unittest.TestCase):
 
 		self.assertEqual(len(comments), 1)
 
-		self.assertEqual(comments[0].code_span.extract(code), '<!--multi-line\ncomment-->')
-		self.assertEqual(comments[0].text_span.extract(code), "multi-line\ncomment")
+		self.assertEqual(comments[0].code, '<!--multi-line\ncomment-->')
+		self.assertEqual(comments[0].text, "multi-line\ncomment")
 		self.assertEqual(comments[0].multiline, True)
 
 	def testTwoSeparateSingleComment(self):
@@ -41,12 +41,12 @@ class HtmlParserTest(unittest.TestCase):
 
 		self.assertEqual(len(comments), 2)
 
-		self.assertEqual(comments[0].code_span.extract(code), '<!--comment1-->')
-		self.assertEqual(comments[0].text_span.extract(code), "comment1")
+		self.assertEqual(comments[0].code, '<!--comment1-->')
+		self.assertEqual(comments[0].text, "comment1")
 		self.assertEqual(comments[0].multiline, False)
 
-		self.assertEqual(comments[1].code_span.extract(code), '<!--comment2-->')
-		self.assertEqual(comments[1].text_span.extract(code), "comment2")
+		self.assertEqual(comments[1].code, '<!--comment2-->')
+		self.assertEqual(comments[1].text, "comment2")
 		self.assertEqual(comments[1].multiline, False)
 
 	def testLayeredComment(self):
@@ -55,8 +55,8 @@ class HtmlParserTest(unittest.TestCase):
 
 		self.assertEqual(len(comments), 1)
 
-		self.assertEqual(comments[0].code_span.extract(code), '<!-- comment<!-- -->')
-		self.assertEqual(comments[0].text_span.extract(code), " comment<!-- ")
+		self.assertEqual(comments[0].code, '<!-- comment<!-- -->')
+		self.assertEqual(comments[0].text, " comment<!-- ")
 		self.assertEqual(comments[0].multiline, False)
 
 	def testNonGreedyComment(self):
@@ -65,8 +65,8 @@ class HtmlParserTest(unittest.TestCase):
 
 		self.assertEqual(len(comments), 1)
 
-		self.assertEqual(comments[0].code_span.extract(code), '<!--i am a comment-->')
-		self.assertEqual(comments[0].text_span.extract(code), "i am a comment")
+		self.assertEqual(comments[0].code, '<!--i am a comment-->')
+		self.assertEqual(comments[0].text, "i am a comment")
 		self.assertEqual(comments[0].multiline, False)
 
 	def testSideBySideComment(self):
@@ -75,12 +75,12 @@ class HtmlParserTest(unittest.TestCase):
 
 		self.assertEqual(len(comments), 2)
 
-		self.assertEqual(comments[0].code_span.extract(code), '<!--comment1-->')
-		self.assertEqual(comments[0].text_span.extract(code), "comment1")
+		self.assertEqual(comments[0].code, '<!--comment1-->')
+		self.assertEqual(comments[0].text, "comment1")
 		self.assertEqual(comments[0].multiline, False)
 
-		self.assertEqual(comments[1].code_span.extract(code), '<!--comment2-->')
-		self.assertEqual(comments[1].text_span.extract(code), "comment2")
+		self.assertEqual(comments[1].code, '<!--comment2-->')
+		self.assertEqual(comments[1].text, "comment2")
 		self.assertEqual(comments[1].multiline, False)
 
 	def testUnterminatedComment(self):

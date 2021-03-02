@@ -40,7 +40,7 @@ class Comment:
 		self.multiline = multiline
 
 		self._text: Optional[str] = None
-		self._markup: Optional[str] = None
+		self._code: Optional[str] = None
 
 	@property
 	def text(self) -> str:
@@ -48,11 +48,13 @@ class Comment:
 			self._text = self.text_span.extract(self.source)
 		return self._text
 
+
 	@property
 	def code(self) -> str:
-		if self._text is None:
-			self._text = self.code_span.extract(self.source)
-		return self._text
+		if self._code is None:
+			self._code = self.code_span.extract(self.source)
+		return self._code
+
 
 	def __repr__(self):
 		return f"Comment({self.code_span}, {self.text_span}, {self.multiline})"

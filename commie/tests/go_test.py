@@ -20,8 +20,8 @@ class GoParserTest(unittest.TestCase):
 
 		self.assertEqual(len(comments), 1)
 
-		self.assertEqual(comments[0].code_span.extract(code), "// single line comment")
-		self.assertEqual(comments[0].text_span.extract(code), " single line comment")
+		self.assertEqual(comments[0].code, "// single line comment")
+		self.assertEqual(comments[0].text, " single line comment")
 		self.assertEqual(comments[0].multiline, False)
 
 	def testSingleLineCommentInRuneLiteral(self):
@@ -45,8 +45,8 @@ class GoParserTest(unittest.TestCase):
 
 		self.assertEqual(len(comments), 1)
 
-		self.assertEqual(comments[0].code_span.extract(code), '/* multiline\ncomment */')
-		self.assertEqual(comments[0].text_span.extract(code), " multiline\ncomment ")
+		self.assertEqual(comments[0].code, '/* multiline\ncomment */')
+		self.assertEqual(comments[0].text, " multiline\ncomment ")
 		self.assertEqual(comments[0].multiline, True)
 
 	def testMultiLineCommentWithStars(self):
@@ -55,8 +55,8 @@ class GoParserTest(unittest.TestCase):
 
 		self.assertEqual(len(comments), 1)
 
-		self.assertEqual(comments[0].code_span.extract(code), "/***************/")
-		self.assertEqual(comments[0].text_span.extract(code), "*************")
+		self.assertEqual(comments[0].code, "/***************/")
+		self.assertEqual(comments[0].text, "*************")
 		self.assertEqual(comments[0].multiline, True)
 
 	def testMultiLineCommentInRuneLiteral(self):

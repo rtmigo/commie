@@ -20,8 +20,8 @@ class PythonParserTest(unittest.TestCase):
 
 		self.assertEqual(len(comments), 1)
 
-		self.assertEqual(comments[0].code_span.extract(code), '# comment')
-		self.assertEqual(comments[0].text_span.extract(code), " comment")
+		self.assertEqual(comments[0].code, '# comment')
+		self.assertEqual(comments[0].text, " comment")
 		self.assertEqual(comments[0].multiline, False)
 
 	def testCommentInSingleQuotedString(self):
@@ -50,8 +50,8 @@ class PythonParserTest(unittest.TestCase):
 
 		self.assertEqual(len(comments), 1)
 
-		self.assertEqual(comments[0].code_span.extract(code), "# this is a comment")
-		self.assertEqual(comments[0].text_span.extract(code), " this is a comment")
+		self.assertEqual(comments[0].code, "# this is a comment")
+		self.assertEqual(comments[0].text, " this is a comment")
 		self.assertEqual(comments[0].multiline, False)
 
 	def testEscapedDoubleQuote(self):
@@ -60,6 +60,6 @@ class PythonParserTest(unittest.TestCase):
 
 		self.assertEqual(len(comments), 1)
 
-		self.assertEqual(comments[0].code_span.extract(code), "# this is another comment")
-		self.assertEqual(comments[0].text_span.extract(code), " this is another comment")
+		self.assertEqual(comments[0].code, "# this is another comment")
+		self.assertEqual(comments[0].text, " this is another comment")
 		self.assertEqual(comments[0].multiline, False)

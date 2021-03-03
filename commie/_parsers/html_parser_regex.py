@@ -46,7 +46,8 @@ def extract_comments(htmlCode: str) -> Iterable[Comment]:
 		kind = match.lastgroup
 
 		if kind == "single":
-			yield matchGroupToComment(match, "single_content", False)
+			# all the comments in HTML are multi-line
+			yield matchGroupToComment(match, "single_content", True)
 		elif kind == "multi":
 			yield matchGroupToComment(match, "multi_content", True)
 		elif kind == "error":

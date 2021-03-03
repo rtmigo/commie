@@ -28,7 +28,7 @@ class HtmlParserTest(unittest.TestCase):
 
 		self.assertEqual(comments[0].code, "<!--comment-->")
 		self.assertEqual(comments[0].text, "comment")
-		self.assertEqual(comments[0].multiline, False)
+		self.assertEqual(comments[0].multiline, True)
 
 	def testMultilineComment(self):
 		code = '<!--multi-line\ncomment-->'
@@ -48,11 +48,11 @@ class HtmlParserTest(unittest.TestCase):
 
 		self.assertEqual(comments[0].code, '<!--comment1-->')
 		self.assertEqual(comments[0].text, "comment1")
-		self.assertEqual(comments[0].multiline, False)
+		self.assertEqual(comments[0].multiline, True)
 
 		self.assertEqual(comments[1].code, '<!--comment2-->')
 		self.assertEqual(comments[1].text, "comment2")
-		self.assertEqual(comments[1].multiline, False)
+		self.assertEqual(comments[1].multiline, True)
 
 	def testLayeredComment(self):
 		code = '<!-- comment<!-- -->'
@@ -62,7 +62,7 @@ class HtmlParserTest(unittest.TestCase):
 
 		self.assertEqual(comments[0].code, '<!-- comment<!-- -->')
 		self.assertEqual(comments[0].text, " comment<!-- ")
-		self.assertEqual(comments[0].multiline, False)
+		self.assertEqual(comments[0].multiline, True)
 
 	def testNonGreedyComment(self):
 		code = '<!--i am a comment--> not a comment -->'
@@ -72,7 +72,7 @@ class HtmlParserTest(unittest.TestCase):
 
 		self.assertEqual(comments[0].code, '<!--i am a comment-->')
 		self.assertEqual(comments[0].text, "i am a comment")
-		self.assertEqual(comments[0].multiline, False)
+		self.assertEqual(comments[0].multiline, True)
 
 	def testSideBySideComment(self):
 		code = '<!--comment1--> ... <!--comment2-->'
@@ -82,11 +82,11 @@ class HtmlParserTest(unittest.TestCase):
 
 		self.assertEqual(comments[0].code, '<!--comment1-->')
 		self.assertEqual(comments[0].text, "comment1")
-		self.assertEqual(comments[0].multiline, False)
+		self.assertEqual(comments[0].multiline, True)
 
 		self.assertEqual(comments[1].code, '<!--comment2-->')
 		self.assertEqual(comments[1].text, "comment2")
-		self.assertEqual(comments[1].multiline, False)
+		self.assertEqual(comments[1].multiline, True)
 
 	def testUnterminatedComment(self):
 		code = '<!--invalid'

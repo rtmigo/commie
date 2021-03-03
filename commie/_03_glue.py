@@ -13,7 +13,7 @@ def _startsTheLine(text: str, pos: int) -> bool:
 	# if this is the first string, we'll get prevNewLinePos=-1.
 	# But we still can get the followining substring:
 	lineStart = text[prevNewLinePos + 1:pos]
-	#print("LS", lineStart, prevNewLinePos, pos, len(text))
+	# print("LS", lineStart, prevNewLinePos, pos, len(text))
 	return not lineStart.strip()  # true if all blanks
 
 
@@ -45,28 +45,31 @@ class TestStartsTheLine(unittest.TestCase):
 		self.assertEqual(_startsTheLine(text, text.find("e")), False)
 		self.assertEqual(_startsTheLine(text, text.find("f")), False)
 
-def _oneEmptyLineBetween(text:str, start:int, end:int) -> bool:
+
+def _oneEmptyLineBetween(text: str, start: int, end: int) -> bool:
 	between = text[start:end]
 	linesBetween = between.splitlines()
-	return len(linesBetween)==2 and not any(s.strip() for s in linesBetween)
+	return len(linesBetween) == 2 and not any(s.strip() for s in linesBetween)
 
 
 def group_singleline_comments(comments: Iterable[Comment]) -> Iterable[List[Comment]]:
+	"""Combines adjacent single-line comments into groups."""
 	group: List[Comment] = []
 
 	for comment in comments:
 
 		if not comment.multiline and _startsTheLine(comment.source, comment.code_span.start):
-			if group and not _oneEmptyLineBetween(comment.source, group[-1].code_span.end, comment.code_span.start):
+			if group and not _oneEmptyLineBetween(comment.source, group[-1].code_span.end,
+												  comment.code_span.start):
 				if group:
 					yield group
-					group=[]
+					group = []
 			group.append(comment)
 			continue
 
 		if group:
 			yield group
-			group=[]
+			group = []
 		yield [comment]
 
 	if group:
@@ -103,7 +106,6 @@ class TestGlue(unittest.TestCase):
 
 		groups = list(group_singleline_comments(iter_comments_c(source)))
 		self.assertEqual(len(groups), 3)
-
 
 	def testThreeMultiLines(self):
 		from .parsers import iter_comments_c
@@ -191,12 +193,10 @@ class TestGlue(unittest.TestCase):
 		for g in groups:
 			print(len(g), g[0].text)
 
-
 		self.assertEqual(len(groups), 3)
 		self.assertEqual(len(groups[0]), 1)
 		self.assertEqual(len(groups[1]), 3)
 		self.assertEqual(len(groups[2]), 1)
-
 
 	def testMix2(self):
 		from .parsers import iter_comments_c
@@ -226,7 +226,6 @@ class TestGlue(unittest.TestCase):
 		self.assertEqual(len(groups[1]), 1)
 		self.assertEqual(len(groups[2]), 1)
 		self.assertEqual(len(groups[3]), 2)
-
 
 	def testMix3(self):
 		from .parsers import iter_comments_c
@@ -258,9 +257,6 @@ class TestGlue(unittest.TestCase):
 		self.assertEqual(len(groups[1]), 1)
 		self.assertEqual(len(groups[2]), 1)
 		self.assertEqual(len(groups[3]), 2)
-
-
-
 
 
 if __name__ == "__main__":

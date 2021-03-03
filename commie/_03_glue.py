@@ -1,4 +1,6 @@
-# EXPERIMENTAL DRAFT
+# SPDX-FileCopyrightText: Copyright (c) 2021 Art Galkin <ortemeo@gmail.com>
+# SPDX-License-Identifier: BSD-3-Clause
+
 import unittest
 from typing import *
 
@@ -13,7 +15,6 @@ def _startsTheLine(text: str, pos: int) -> bool:
 	# if this is the first string, we'll get prevNewLinePos=-1.
 	# But we still can get the followining substring:
 	lineStart = text[prevNewLinePos + 1:pos]
-	# print("LS", lineStart, prevNewLinePos, pos, len(text))
 	return not lineStart.strip()  # true if all blanks
 
 

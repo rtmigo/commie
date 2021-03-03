@@ -84,7 +84,7 @@ When single-line comments are adjacent, it makes sense to consider them together
 // single-line comments with 
 // no empty lines between them
 
-// Group C: This comment loosely 
+// Group C: This paragraph loosely 
 // stretched into two lines  
 ```
 

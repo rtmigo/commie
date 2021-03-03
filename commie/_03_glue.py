@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2021 Art Galkin <ortemeo@gmail.com>
+# SPDX-FileCopyrightText: Copyright (c) 2021 Art Galkin <ortemeo.werhal.com>
 # SPDX-License-Identifier: BSD-3-Clause
 
 import unittest
@@ -79,6 +79,13 @@ def group_singleline_comments(comments: Iterable[Comment]) -> Iterable[List[Comm
 
 
 class TestGlue(unittest.TestCase):
+
+	def testEmpty(self):
+		from ._parsers import iter_comments_c
+		source = ""
+		groups = list(group_singleline_comments(iter_comments_c(source)))
+		self.assertEqual(len(groups), 0)
+
 
 	def testThreeSingleLines(self):
 		from ._parsers import iter_comments_c

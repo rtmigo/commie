@@ -75,7 +75,7 @@ for comment in commie.iter_comments(source_code, filename=filename):
 
 # Group single line comments
 
-Single-line comments are adjacent to each other:
+When single-line comments are adjacent, it makes sense to consider them together:
 
 ```cpp
 // Group A: A short comment
@@ -88,15 +88,13 @@ Single-line comments are adjacent to each other:
 // stretched into two lines  
 ```
 
-Combine them into groups like that:
+The comments from the example above can be grouped into three groups as follows:
 
 ```python
-
 from commie import iter_comments, group_singleline_comments
 
 for group in group_singleline_comments(iter_comments(...)):
   # ... each group is a list of Comment objects ...
-
 ```
 
 --------------------------------------------------------

@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 # AG 2021: in pypi/comment_parser this module was only for parsing JavaScript.
-# But in fact, it coped better with parsing C than regex-based c_parser.py.
+# But in fact, it coped better with parsing C than old regex-based c_parser.py.
 # So for now it is the default parsed for all C-like languages.
 #
 # The most evident difference between JS and C in that single quotes can

@@ -51,14 +51,13 @@ class CssParserTest(unittest.TestCase):
 
 	def testThreeComments(self):
 		code = """
-    
-    /* THIS IS A CSS CODE
-       WITH MULTILINE COMMENTS */
-    
-    body {margin: 0; /* comment inside */}
-    p {margin: 1px; ) /* comment outside */
-    
-    """
+		/* THIS IS A CSS CODE
+		   WITH MULTILINE COMMENTS */
+		
+		body {margin: 0; /* comment inside */}
+		p {margin: 1px; ) /* comment outside */
+		
+		"""
 		comments = commentsToList(code)
 
 		self.assertEqual(len(comments), 3)

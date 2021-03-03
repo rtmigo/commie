@@ -95,6 +95,7 @@ from commie import iter_comments, group_singleline_comments
 
 for group in group_singleline_comments(iter_comments(...)):
   # ... each group is a list of Comment objects ...
+  pass
 ```
 
 Multi-line comments will also be returned. They will not be grouped with their neighbors.

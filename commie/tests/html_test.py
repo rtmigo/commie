@@ -5,8 +5,8 @@
 import unittest
 from typing import List
 
-from .. import iter_comments_html
-from ..parsers.common import Comment, UnterminatedCommentError
+from commie._01_common import Comment
+from .. import iter_comments_html, UnterminatedCommentError
 
 
 def commentsToList(code: str) -> List[Comment]:

@@ -6,22 +6,6 @@ import unittest
 from typing import NamedTuple, Optional
 
 
-class Error(Exception):
-	"""Base Error class for all comment parsers."""
-
-
-class FileError(Error):
-	"""Raised if there is an issue reading a file."""
-
-
-class UnterminatedCommentError(Error):
-	"""Raised if an Unterminated multi-line comment is encountered."""
-
-
-class FormatUndetectedError(Error):
-	"""Raised if there is an issue reading a file."""
-
-
 class Span(NamedTuple):
 	start: int
 	end: int

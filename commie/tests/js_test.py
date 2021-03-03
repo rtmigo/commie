@@ -5,9 +5,9 @@
 import unittest
 from typing import List
 
+from commie._01_common import Comment
 from .helper import minimize
-from .. import iter_comments_c
-from ..parsers.common import Comment, UnterminatedCommentError
+from .. import iter_comments_c, UnterminatedCommentError
 
 
 def commentsToList(code: str) -> List[Comment]:

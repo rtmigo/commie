@@ -17,19 +17,20 @@
 from enum import IntEnum, auto
 from typing import Iterable
 
-from commie.parsers import common
-from commie.parsers.common import Comment, Span
+import commie._01_errors
+from commie import _01_common
+from commie._01_common import Comment, Span
 
 
-def iter_comments_clike(source: str) -> Iterable[Comment]:
-	return iter_comments_clike_universal(source, "\"'")
+def iter_comments_c(source: str) -> Iterable[Comment]:
+	return _iter_comments_universal(source, "\"'")
 
 
 def iter_comments_go(source: str) -> Iterable[Comment]:
-	return iter_comments_clike_universal(source, "\"'`")
+	return _iter_comments_universal(source, "\"'`")
 
 
-def iter_comments_clike_universal(source: str, string_quote_chars: str) -> Iterable[Comment]:
+def _iter_comments_universal(source: str, string_quote_chars: str) -> Iterable[Comment]:
 	class State(IntEnum):
 
 		DEFAULT = auto()
@@ -70,7 +71,7 @@ def iter_comments_clike_universal(source: str, string_quote_chars: str) -> Itera
 		elif state == State.IN_SINGLE_LINE_COMMENT:
 			# in single-line comment, reading characters until EOL
 			if char == '\n':
-				yield common.Comment(
+				yield _01_common.Comment(
 					source,
 					text_span=Span(comment_start_pos + 2, position),
 					code_span=Span(comment_start_pos, position),
@@ -105,10 +106,10 @@ def iter_comments_clike_universal(source: str, string_quote_chars: str) -> Itera
 
 	# end of file
 	if state in (State.IN_MULTI_LINE_COMMENT, State.IN_MULTI_LINE_COMMENT_AFTER_ASTERISK):
-		raise common.UnterminatedCommentError()
+		raise commie._01_errors.UnterminatedCommentError()
 
 	if state == State.IN_SINGLE_LINE_COMMENT:
-		yield common.Comment(
+		yield _01_common.Comment(
 			source,
 			text_span=Span(comment_start_pos + 2, position + 1),
 			code_span=Span(comment_start_pos, position + 1),

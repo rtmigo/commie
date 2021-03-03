@@ -10,9 +10,9 @@
 import re
 from typing import Iterable
 
-from commie.parsers import common
-from commie.parsers.common import Comment
-from commie.parsers.helper import matchGroupToComment
+import commie._01_errors
+from commie._01_common import Comment
+from commie.parsers._helper import matchGroupToComment
 
 
 def extract_comments(code: str) -> Iterable[Comment]:
@@ -50,4 +50,4 @@ def extract_comments(code: str) -> Iterable[Comment]:
 			yield matchGroupToComment(match, "multi_content", True)
 
 		elif kind == "error":
-			raise common.UnterminatedCommentError()
+			raise commie._01_errors.UnterminatedCommentError()

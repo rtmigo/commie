@@ -5,8 +5,8 @@
 import unittest
 from typing import List
 
-from commie import iter_comments_c
-from commie.parsers.common import Comment, UnterminatedCommentError
+from commie import iter_comments_c, UnterminatedCommentError
+from commie._01_common import Comment
 from commie.tests.helper import minimize
 
 

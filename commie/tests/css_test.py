@@ -14,6 +14,11 @@ def commentsToList(code: str) -> List[Comment]:
 
 class CssParserTest(unittest.TestCase):
 
+	def testEmptyString(self):
+		code = ""
+		comments = commentsToList(code)
+		self.assertEqual(len(comments), 0)
+
 	def testSimpleMain(self):
 		code = ".cssClass { /* i am\n a comment! */ }"
 		comments = commentsToList(code)

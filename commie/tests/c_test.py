@@ -154,6 +154,12 @@ class CParserTest(unittest.TestCase):
 		self.assertEqual(comments[1].text, " and ended it here */")
 		self.assertEqual(comments[1].multiline, False)
 
+	def testEmptyString(self):
+		code = ""
+		comments = commentsToList(code)
+		self.assertEqual(len(comments), 0)
+
+
 	def testFragment(self):
 		code = """
 		

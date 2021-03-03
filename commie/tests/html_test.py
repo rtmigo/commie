@@ -15,6 +15,11 @@ def commentsToList(code: str) -> List[Comment]:
 
 class HtmlParserTest(unittest.TestCase):
 
+	def testEmptyString(self):
+		code = ""
+		comments = commentsToList(code)
+		self.assertEqual(len(comments), 0)
+
 	def testComment(self):
 		code = '<!--comment-->'
 		comments = commentsToList(code)

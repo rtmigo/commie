@@ -14,6 +14,11 @@ def commentsToList(code: str) -> List[Comment]:
 
 class PythonParserTest(unittest.TestCase):
 
+	def testEmptyString(self):
+		code = ""
+		comments = commentsToList(code)
+		self.assertEqual(len(comments), 0)
+
 	def testComment(self):
 		code = '# comment'
 		comments = commentsToList(code)

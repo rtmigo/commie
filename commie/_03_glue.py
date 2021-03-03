@@ -54,6 +54,7 @@ def _oneEmptyLineBetween(text: str, start: int, end: int) -> bool:
 
 def group_singleline_comments(comments: Iterable[Comment]) -> Iterable[List[Comment]]:
 	"""Combines adjacent single-line comments into groups."""
+
 	group: List[Comment] = []
 
 	for comment in comments:

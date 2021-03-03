@@ -10,27 +10,26 @@
 # contain a string in JS, but in C and C++ they are only for single chars.
 # However, for the task, individual characters within single quotes are
 # hardly different from single-letter strings.
+#
+# The parser for Go now also relies on the following code. In fact, the only
+# key differnce in Go parsed was `backquoted strings` support
 
 from enum import IntEnum, auto
-from typing import Iterable, Optional
+from typing import Iterable
 
 from commie.parsers import common
 from commie.parsers.common import Comment, Span
 
 
-def extract_comments(source: str) -> Iterable[Comment]:
-	"""Extracts a list of comments from C-like source code.
+def iter_comments_clike(source: str) -> Iterable[Comment]:
+	return iter_comments_clike_universal(source, "\"'")
 
-	C-like comments come in two forms, single and multi-line comments.
-	  - Single-line comments begin with '//' and continue to the end of line.
-	  - Multi-line comments begin with '/*' and end with '*/' and can span
-		multiple lines of code. If a multi-line comment does not terminate
-		before EOF is reached, then an exception is raised.
 
-	This module takes quoted strings into account when extracting comments from
-	source code.
-	"""
+def iter_comments_go(source: str) -> Iterable[Comment]:
+	return iter_comments_clike_universal(source, "\"'`")
 
+
+def iter_comments_clike_universal(source: str, string_quote_chars: str) -> Iterable[Comment]:
 	class State(IntEnum):
 
 		DEFAULT = auto()
@@ -43,9 +42,7 @@ def extract_comments(source: str) -> Iterable[Comment]:
 
 	state: State = State.DEFAULT
 
-	markup_start_pos = None
-	text_start_pos: Optional[int] = 0
-	# text_length: Optional[int] = 0
+	comment_start_pos = None
 
 	quote = None
 	position = 0
@@ -56,7 +53,7 @@ def extract_comments(source: str) -> Iterable[Comment]:
 			# waiting for comment start character or beginning of a string
 			if char == '/':
 				state = State.FOUND_SLASH
-			elif char in ('"', "'"):
+			elif char in string_quote_chars:
 				quote = char
 				state = State.IN_STRING
 		elif state == State.FOUND_SLASH:
@@ -64,12 +61,10 @@ def extract_comments(source: str) -> Iterable[Comment]:
 			# determine if single or multi-line comment.
 			if char == '/':
 				state = State.IN_SINGLE_LINE_COMMENT
-				markup_start_pos = position - 1  # we are at second char of "//"
-				text_start_pos = position + 1
+				comment_start_pos = position - 1  # we are at second char of "//"
 			elif char == '*':
 				state = State.IN_MULTI_LINE_COMMENT
-				markup_start_pos = position - 1  # we are at second char of "/*"
-				text_start_pos = position + 1
+				comment_start_pos = position - 1  # we are at second char of "/*"
 			else:
 				state = State.DEFAULT
 		elif state == State.IN_SINGLE_LINE_COMMENT:
@@ -77,36 +72,27 @@ def extract_comments(source: str) -> Iterable[Comment]:
 			if char == '\n':
 				yield common.Comment(
 					source,
-					text_span=Span(text_start_pos, position),
-					code_span=Span(markup_start_pos, position),
+					text_span=Span(comment_start_pos + 2, position),
+					code_span=Span(comment_start_pos, position),
 					multiline=False)
-				text_length = 0
 				state = State.DEFAULT
-		# else:
-		#	text_length += 1
 		elif state == State.IN_MULTI_LINE_COMMENT:
-			# in multi-line comment, add characters until '*' is
-			# encountered.
+			# in multi-line comment, add characters until '*' is encountered
 			if char == '*':
 				state = State.IN_MULTI_LINE_COMMENT_AFTER_ASTERISK
-		# else:
-		# text_length += 1
 		elif state == State.IN_MULTI_LINE_COMMENT_AFTER_ASTERISK:
 			# In multi-line comment with asterisk found. Determine if
 			# comment is ending.
 			if char == '/':
 				yield Comment(
 					source,
-					text_span=Span(text_start_pos, position - 1),
-					code_span=Span(markup_start_pos, position + 1),
+					text_span=Span(comment_start_pos + 2, position - 1),
+					code_span=Span(comment_start_pos, position + 1),
 					multiline=True)
-				text_length = 0
 				state = State.DEFAULT
 			else:
-				# text_length += 1
 				# care for multiple '*' in a row
 				if char != '*':
-					# text_length += 1
 					state = State.IN_MULTI_LINE_COMMENT
 		elif state == State.IN_STRING:
 			# in string literal, expect literal end or escape character.
@@ -116,8 +102,6 @@ def extract_comments(source: str) -> Iterable[Comment]:
 				state = State.IN_STRING_AFTER_BACKSLASH
 		elif state == State.IN_STRING_AFTER_BACKSLASH:
 			state = State.IN_STRING
-	# if char == '\n':
-	# 	pass
 
 	# end of file
 	if state in (State.IN_MULTI_LINE_COMMENT, State.IN_MULTI_LINE_COMMENT_AFTER_ASTERISK):
@@ -126,6 +110,6 @@ def extract_comments(source: str) -> Iterable[Comment]:
 	if state == State.IN_SINGLE_LINE_COMMENT:
 		yield common.Comment(
 			source,
-			text_span=Span(text_start_pos, position + 1),
-			code_span=Span(markup_start_pos, position + 1),
+			text_span=Span(comment_start_pos + 2, position + 1),
+			code_span=Span(comment_start_pos, position + 1),
 			multiline=False)

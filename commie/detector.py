@@ -5,12 +5,10 @@ import unittest
 from pathlib import Path
 from typing import Iterable, Union
 
-from .parsers.c_like_parser import extract_comments as iter_comments_c, \
-	extract_comments as iter_comments_js
+from .parsers.c_like_parser import iter_comments_clike, iter_comments_go
 from .parsers.c_regex_parser import extract_comments as iter_comments_sass
 from .parsers.common import Comment, FormatUndetectedError
 from .parsers.css_parser import extract_comments as iter_comments_css
-from .parsers.go_parser import extract_comments as iter_comments_go
 from .parsers.html_parser import extract_comments as iter_comments_html
 from .parsers.python_parser import extract_comments as iter_comments_python
 from .parsers.ruby_parser import extract_comments as iter_comments_ruby
@@ -27,13 +25,13 @@ def pickfunc(filename: str):
 			   # have .m filename extensions, while Objective-C 'header/interface' files
 			   # have .h extensions
 			   "m"]:
-		return iter_comments_c
+		return iter_comments_clike
 
 	if ext in ["go"]:
 		return iter_comments_go
 
 	if ext in ["js", "ts", "dart"]:
-		return iter_comments_js
+		return iter_comments_clike
 
 	if ext in ["html", "htm", "xml"]:
 		return iter_comments_html
@@ -62,8 +60,8 @@ class TestPickFunc(unittest.TestCase):
 		self.assertEqual(pickfunc(filename="1991.HTM"), iter_comments_html)
 
 	def test_js(self):
-		self.assertEqual(pickfunc(filename="file.dart"), iter_comments_js)
-		self.assertEqual(pickfunc(filename="file.js"), iter_comments_js)
+		self.assertEqual(pickfunc(filename="file.dart"), iter_comments_clike)
+		self.assertEqual(pickfunc(filename="file.js"), iter_comments_clike)
 
 	def test_undetected(self):
 		with self.assertRaises(FormatUndetectedError):
@@ -78,13 +76,14 @@ def iter_comments_str(code: str, filename: str) -> Iterable[Comment]:
 def iter_comments_file(file: Path) -> Iterable[Comment]:
 	return iter_comments_str(file.read_text(), file.name)
 
-def iter_comments(codeOrFile:Union[Path,str], filename:str=None) -> Iterable[Comment]:
 
+def iter_comments(codeOrFile: Union[Path, str], filename: str = None) -> Iterable[Comment]:
 	if isinstance(codeOrFile, str):
 		if filename is None:
 			raise ValueError("Please specify filename")
 		return iter_comments_str(codeOrFile, filename)
 	return iter_comments_file(codeOrFile)
+
 
 class TestIterComments(unittest.TestCase):
 	def testNoFilename(self):

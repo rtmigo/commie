@@ -5,7 +5,7 @@
 import unittest
 from typing import List
 
-from .. import iter_comments_go, Comment, UnterminatedCommentError
+from commie import iter_comments_go, Comment, UnterminatedCommentError
 
 
 def commentsToList(code: str) -> List[Comment]:
@@ -15,6 +15,7 @@ def commentsToList(code: str) -> List[Comment]:
 class GoParserTest(unittest.TestCase):
 
 	def testSingleLineComment(self):
+
 		code = '// single line comment'
 		comments = commentsToList(code)
 

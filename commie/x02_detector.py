@@ -5,9 +5,9 @@ import unittest
 from pathlib import Path
 from typing import Iterable, Union
 
-from commie._01_common import Comment
-from commie._01_errors import *
-from commie._parsers import *
+from commie.parsers import *
+from commie.x01_common import Comment
+from commie.x01_errors import *
 
 
 def pickfunc(filename: str):

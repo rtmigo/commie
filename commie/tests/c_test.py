@@ -6,8 +6,8 @@ import unittest
 from typing import List
 
 from commie import iter_comments_c, UnterminatedCommentError
-from commie._01_common import Comment
 from commie.tests.helper import minimize
+from commie.x01_common import Comment
 
 
 def commentsToList(code: str) -> List[Comment]:

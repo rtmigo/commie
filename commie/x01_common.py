@@ -39,6 +39,9 @@ class Comment:
 			self._code = self.code_span.extract(self.source)
 		return self._code
 
+	def __str__(self):
+		return self.code
+
 	def __repr__(self):
 		return f"Comment({repr(self.source)}, {self.code_span}, {self.text_span}, {self.multiline})"
 
@@ -51,8 +54,12 @@ class Comment:
 
 class TestComment(unittest.TestCase):
 	def test(self):
+
 		c = Comment("Code /* commented */ like that", Span(5, 20), Span(7, 18), True)
 		self.assertEqual(c.code, "/* commented */")
 		self.assertEqual(c.text, " commented ")
 		self.assertEqual(repr(c),
 						 "Comment('Code /* commented */ like that', Span(start=5, end=20), Span(start=7, end=18), True)")
+		self.assertEqual(str(c),
+						 "/* commented */")
+

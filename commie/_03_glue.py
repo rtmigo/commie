@@ -79,7 +79,7 @@ def group_singleline_comments(comments: Iterable[Comment]) -> Iterable[List[Comm
 class TestGlue(unittest.TestCase):
 
 	def testThreeSingleLines(self):
-		from .parsers import iter_comments_c
+		from ._parsers import iter_comments_c
 
 		source = """
 			// three single line
@@ -93,7 +93,7 @@ class TestGlue(unittest.TestCase):
 		self.assertEqual(len(groups[0]), 3)
 
 	def testThreeSingleLinesTooMuchSpaces(self):
-		from .parsers import iter_comments_c
+		from ._parsers import iter_comments_c
 
 		source = """
 			// comment a
@@ -108,7 +108,7 @@ class TestGlue(unittest.TestCase):
 		self.assertEqual(len(groups), 3)
 
 	def testThreeMultiLines(self):
-		from .parsers import iter_comments_c
+		from ._parsers import iter_comments_c
 
 		source = """
 			/* comment a */
@@ -120,7 +120,7 @@ class TestGlue(unittest.TestCase):
 		self.assertEqual(len(groups), 3)
 
 	def testSSM(self):
-		from .parsers import iter_comments_c
+		from ._parsers import iter_comments_c
 
 		source = """
 			// comment a
@@ -134,7 +134,7 @@ class TestGlue(unittest.TestCase):
 		self.assertEqual(len(groups[1]), 1)
 
 	def testMSS(self):
-		from .parsers import iter_comments_c
+		from ._parsers import iter_comments_c
 
 		source = """
 			/* comment a */
@@ -148,7 +148,7 @@ class TestGlue(unittest.TestCase):
 		self.assertEqual(len(groups[1]), 2)
 
 	def testSMS(self):
-		from .parsers import iter_comments_c
+		from ._parsers import iter_comments_c
 
 		source = """
 			// comment a
@@ -160,7 +160,7 @@ class TestGlue(unittest.TestCase):
 		self.assertEqual(len(groups), 3)
 
 	def testMSM(self):
-		from .parsers import iter_comments_c
+		from ._parsers import iter_comments_c
 
 		source = """
 			/* comment a */
@@ -172,7 +172,7 @@ class TestGlue(unittest.TestCase):
 		self.assertEqual(len(groups), 3)
 
 	def testMix1(self):
-		from .parsers import iter_comments_c
+		from ._parsers import iter_comments_c
 
 		source = """
 			// first single comment
@@ -199,7 +199,7 @@ class TestGlue(unittest.TestCase):
 		self.assertEqual(len(groups[2]), 1)
 
 	def testMix2(self):
-		from .parsers import iter_comments_c
+		from ._parsers import iter_comments_c
 
 		source = """
 			#include<stdio.h>
@@ -228,7 +228,7 @@ class TestGlue(unittest.TestCase):
 		self.assertEqual(len(groups[3]), 2)
 
 	def testMix3(self):
-		from .parsers import iter_comments_c
+		from ._parsers import iter_comments_c
 
 		source = """
 			#include<stdio.h>

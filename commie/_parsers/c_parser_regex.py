@@ -12,7 +12,7 @@ from typing import Iterable
 
 import commie._01_errors
 from commie._01_common import Comment
-from commie.parsers._helper import matchGroupToComment
+from commie._parsers._helper import matchGroupToComment
 
 
 def extract_comments(code: str) -> Iterable[Comment]:

@@ -73,6 +73,32 @@ for comment in commie.iter_comments(source_code, filename=filename):
   pass
 ```
 
+# Group single line comments
+
+Single-line comments are adjacent to each other:
+
+```cpp
+// Group A: A short comment
+
+// Group B: It consists of three
+// single-line comments with 
+// no empty lines between them
+
+// Group C: This comment loosely 
+// stretched into two lines  
+```
+
+Combine them into groups like that:
+
+```python
+
+from commie import iter_comments, group_singleline_comments
+
+for group in group_singleline_comments(iter_comments(...)):
+  # ... each group is a list of Comment objects ...
+
+```
+
 --------------------------------------------------------
 
 This project was forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser) in 2021. Motivation:

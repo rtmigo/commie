@@ -88,7 +88,7 @@ When single-line comments are adjacent, it makes sense to consider them together
 // stretched into two lines  
 ```
 
-The comments from the example above can be grouped into three groups as follows:
+The comments from the example above can be combined into three groups as follows:
 
 ```python
 from commie import iter_comments, group_singleline_comments

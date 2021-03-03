@@ -24,13 +24,13 @@ import commie
 
 for comment in commie.iter_comments(Path("/path/to/source.cpp")):
 
-  # something like "/* sample */"
-  print("Comment code:", comment.code)
-  print("Comment code location:", comment.code_span.start, comment.code_span.end)
-
-  # something like " sample " 
-  print("Comment inner text:", comment.text)
-  print("Comment text location:", comment.text_span.start, comment.text_span.end)
+    # something like "/* sample */"
+    print("Comment code:", comment.code)
+    print("Comment code location:", comment.code_span.start, comment.code_span.end)
+    
+    # something like " sample " 
+    print("Comment inner text:", comment.text)
+    print("Comment text location:", comment.text_span.start, comment.text_span.end)
 
 ```
 
@@ -53,8 +53,8 @@ import commie
 source_code_in_golang:str = ...
 
 for comment in commie.iter_comments_go(source_code_in_golang):
-  # ... process comment ...
-  pass
+    # ... process comment ...
+    pass
 ```
 
 # Find comments in a string with a known filename
@@ -69,8 +69,8 @@ filename:str = "/path/to/mycode.go"
 source_code:str = Path(filename).read_text()
 
 for comment in commie.iter_comments(source_code, filename=filename):
-  # ... process comment ...
-  pass
+    # ... process comment ...
+    pass
 ```
 
 # Group single line comments
@@ -94,8 +94,8 @@ The comments from the example above can be combined into **three groups** as fol
 from commie import iter_comments, group_singleline_comments
 
 for group in group_singleline_comments(iter_comments(...)):
-  # ... each group is a list of Comment objects ...
-  pass
+    # ... each group is a list of Comment objects ...
+    pass
 ```
 
 Multi-line comments will also be returned. They will not be grouped with their neighbors.

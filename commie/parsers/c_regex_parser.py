@@ -2,12 +2,10 @@
 # SPDX-FileCopyrightText: Copyright (c) 2015 Jean-Ralph Aviles
 # SPDX-License-Identifier: BSD-3-Clause
 
-# AG 2021: This parser was used as the default for C in comment_parser@pypi.
-# But the JS parser is much better at this task. Even in the comment_parser@pypi,
-# there was a test that failed  with this parser, but worked fine with JS.
+# AG 2021: This was the default C/C++/Java parser in pypi/comment_parser.
+# But the JS parser was much better at this task.
 #
-# The parser will remain here for now, but will be used for C.
-
+# The parser will remain here for now for simpler things like SASS
 
 import re
 from typing import Iterable

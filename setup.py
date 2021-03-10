@@ -4,11 +4,11 @@ from setuptools import setup, find_packages
 
 setup(
   name="commie",
-  version="1.0.3",
+  version="1.0.4",
 
   author="Art Galkin",
   author_email="ortemeo@gmail.com",
-  url='https://github.com/rtmigo/commie.python',
+  url='https://github.com/rtmigo/commie',
 
   packages=find_packages(),
   install_requires=[],

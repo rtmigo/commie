@@ -2,7 +2,7 @@ from pathlib import Path
 
 from setuptools import setup, find_packages
 
-readme = (Path(__file__).parent / 'README.md').read_text();
+readme = (Path(__file__).parent / 'README.md').read_text()
 readme = "# "+readme.partition("\n#")[-1]
 
 setup(

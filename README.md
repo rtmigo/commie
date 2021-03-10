@@ -1,8 +1,8 @@
-[![Actions Status](https://github.com/rtmigo/commie.python/workflows/CI/badge.svg?branch=master)](https://github.com/rtmigo/commie.python/actions)
-[![PyPI status](https://img.shields.io/pypi/status/commie.svg)](https://pypi.python.org/pypi/commie/)
 [![PyPI version shields.io](https://img.shields.io/pypi/v/commie.svg)](https://pypi.python.org/pypi/commie/)
+[![PyPI status](https://img.shields.io/pypi/status/commie.svg)](https://pypi.python.org/pypi/commie/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/commie.svg)](https://pypi.python.org/pypi/commie/)
-[![PyPI license](https://img.shields.io/pypi/l/commie.svg)](https://pypi.python.org/pypi/commie/)
+[![Actions Status](https://github.com/rtmigo/commie.python/workflows/unit%20test/badge.svg?branch=master)](https://github.com/rtmigo/commie.python/actions)
+[![Actions Status](https://github.com/rtmigo/commie.python/workflows/pkg%20test/badge.svg?branch=master)](https://github.com/rtmigo/commie.python/actions)
 
 # [commie](https://github.com/rtmigo/commie.python/)
 

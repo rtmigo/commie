@@ -4,7 +4,7 @@
 [![Actions Status](https://github.com/rtmigo/commie.python/workflows/unit%20test/badge.svg?branch=master)](https://github.com/rtmigo/commie.python/actions)
 [![Actions Status](https://github.com/rtmigo/commie.python/workflows/pkg%20test/badge.svg?branch=master)](https://github.com/rtmigo/commie.python/actions)
 
-# [commie](https://github.com/rtmigo/commie.python/)
+# [commie](https://github.com/rtmigo/commie)
 
 Native Python package for **extracting comments** from source code.
 

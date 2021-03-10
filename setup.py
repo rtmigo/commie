@@ -2,9 +2,12 @@ from pathlib import Path
 
 from setuptools import setup, find_packages
 
+readme = (Path(__file__).parent / 'README.md').read_text();
+readme = "# "+readme.partition("\n#")[-1]
+
 setup(
   name="commie",
-  version="1.0.4",
+  version="1.0.5",
 
   author="Art Galkin",
   author_email="ortemeo@gmail.com",
@@ -15,7 +18,7 @@ setup(
 
   description="Extracts comments from source code in different programming languages",
 
-  long_description=(Path(__file__).parent / 'README.md').read_text(),
+  long_description=readme,
   long_description_content_type='text/markdown',
 
   license='BSD-3-Clause',

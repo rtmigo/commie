@@ -1,13 +1,15 @@
-# [commie](https://github.com/rtmigo/commie.python/)
 [![Actions Status](https://github.com/rtmigo/commie.python/workflows/CI/badge.svg?branch=master)](https://github.com/rtmigo/commie.python/actions)
 [![PyPI status](https://img.shields.io/pypi/status/commie.svg)](https://pypi.python.org/pypi/commie/)
 [![PyPI version shields.io](https://img.shields.io/pypi/v/commie.svg)](https://pypi.python.org/pypi/commie/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/commie.svg)](https://pypi.python.org/pypi/commie/)
 [![PyPI license](https://img.shields.io/pypi/l/commie.svg)](https://pypi.python.org/pypi/commie/)
 
+# [commie](https://github.com/rtmigo/commie.python/)
+
 Native Python package for **extracting comments** from source code.
 
-Multiple programming and markup languages are supported: [see list](https://github.com/rtmigo/commie.python#find-comments-in-a-string).
+Multiple programming and markup languages are
+supported: [see list](https://github.com/rtmigo/commie.python#find-comments-in-a-string).
 
 # Install
 
@@ -15,10 +17,9 @@ Multiple programming and markup languages are supported: [see list](https://gith
 $ pip3 install commie
 ```
 
-
 # Find comments in a file
 
-```python
+``` python
 from pathlib import Path
 import commie
 
@@ -31,7 +32,6 @@ for comment in commie.iter_comments(Path("/path/to/source.cpp")):
     # something like " sample " 
     print("Comment inner text:", comment.text)
     print("Comment text location:", comment.text_span.start, comment.text_span.end)
-
 ```
 
 # Find comments in a string
@@ -47,7 +47,7 @@ for comment in commie.iter_comments(Path("/path/to/source.cpp")):
 | `commie.iter_comments_css` | CSS |
 | `commie.iter_comments_sass` | SASS |
 
-```python
+``` python
 import commie
 
 source_code_in_golang:str = ...
@@ -61,12 +61,12 @@ for comment in commie.iter_comments_go(source_code_in_golang):
 
 Method `commie.iter_comments` will try to guess the file format from the provided filename.
 
-```python
+``` python
 from pathlib import Path
 import commie
 
-filename:str = "/path/to/mycode.go"
-source_code:str = Path(filename).read_text()
+filename: str = "/path/to/mycode.go"
+source_code: str = Path(filename).read_text()
 
 for comment in commie.iter_comments(source_code, filename=filename):
     # ... process comment ...
@@ -90,7 +90,7 @@ When single-line comments are adjacent, it makes sense to consider them together
 
 The comments from the example above can be combined into **three groups** as follows:
 
-```python
+``` python
 from commie import iter_comments, group_singleline_comments
 
 for group in group_singleline_comments(iter_comments(...)):
@@ -102,13 +102,14 @@ Multi-line comments will also be returned. They will not be grouped with their n
 
 --------------------------------------------------------
 
-This project was forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser) in 2021. Motivation:
-  
+This project was forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser) in
+2021. Motivation:
+
 | **comment_parser** | **commie** |
 |--------------------|------------|
 |Returns only a line number|Returns positions where the comment starts and ends. Just like regular string search|
 |Returns only the text of a comment|Respects markup as well, making it possible to remove or replace the entire comment|
 |Depends on [python-magic](https://pypi.org/project/python-magic) that requires an optional installation of binaries|Pure Python. Easy to install with `pip`|
 
-As for now it's too different from `comment_parser`, so the changes will not be pulled there.
+As for now it's too different from `comment_parser`, so the changes will not be pushed there.
 

@@ -111,5 +111,5 @@ This project was forked from [comment_parser](https://github.com/jeanralphaviles
 |Returns only the text of a comment|Respects markup as well, making it possible to remove or replace the entire comment|
 |Depends on [python-magic](https://pypi.org/project/python-magic) that requires an optional installation of binaries|Pure Python. Easy to install with `pip`|
 
-As for now it's too different from `comment_parser`, so the changes will not be pushed there.
+
 

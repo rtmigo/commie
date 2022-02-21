@@ -7,7 +7,7 @@ readme = "# "+readme.partition("\n#")[-1]
 
 setup(
   name="commie",
-  version="1.0.6",
+  version="1.0.6.post1",
 
   author="Artёm IG",
   author_email="ortemeo@gmail.com",
@@ -30,7 +30,6 @@ setup(
 
   # https://pypi.org/classifiers/
   classifiers=[
-    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     'License :: OSI Approved :: BSD License',
     'Topic :: Software Development :: Documentation',

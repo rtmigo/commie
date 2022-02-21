@@ -28,11 +28,11 @@ def extract_comments(rubyCode: str) -> Iterable[Comment]:
 	  """
 	compiled = re.compile(pattern, re.VERBOSE | re.MULTILINE)
 
-	comments = []
+	#comments: List = []
 	for match in compiled.finditer(rubyCode):
 		kind = match.lastgroup
 
 		if kind == "single":
 			yield matchGroupToComment(match, "single_content", False)
 
-	return comments
+	#return comments

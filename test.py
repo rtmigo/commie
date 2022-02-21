@@ -8,9 +8,8 @@ import neatest
 
 def git_push():
     cwd = Path(__file__).parent
-    branch = subprocess.check_output(["git", "branch"], cwd=cwd).decode().split()[-1]
-    if branch!="dev":
-        raise ValueError(f"Unexpected current GIT branch: {branch}")
+    if "* dev" not in subprocess.check_output(["git", "branch"], cwd=cwd).decode():
+        raise ValueError(f"Unexpected current GIT branch.")
     subprocess.check_call(["git", "add", "."], cwd=cwd)
     subprocess.check_call(["git", "commit", "-m",
                            f"Autocommit from {os.path.basename(__file__)}. "

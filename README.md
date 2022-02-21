@@ -6,7 +6,7 @@
 
 # [commie](https://github.com/rtmigo/commie)
 
-Native Python package for **extracting comments** from source code.
+Python package for **extracting comments** from source code.
 
 Multiple programming and markup languages are
 supported: [see list](https://github.com/rtmigo/commie.python#find-comments-in-a-string).
@@ -102,8 +102,7 @@ Multi-line comments will also be returned. They will not be grouped with their n
 
 --------------------------------------------------------
 
-This project was forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser) in
-2021. Motivation:
+This project was forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser) in 2021. Motivation:
 
 | **comment_parser** | **commie** |
 |--------------------|------------|

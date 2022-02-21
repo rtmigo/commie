@@ -1,5 +1,3 @@
-# https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
 name: unit test
 
 on:
@@ -23,7 +21,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.7, 3.8, 3.9, '3.10']
 
     steps:
     - uses: actions/checkout@v2

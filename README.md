@@ -1,10 +1,7 @@
 [![PyPI version shields.io](https://img.shields.io/pypi/v/commie.svg)](https://pypi.python.org/pypi/commie/)
-[![PyPI status](https://img.shields.io/pypi/status/commie.svg)](https://pypi.python.org/pypi/commie/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/commie.svg)](https://pypi.python.org/pypi/commie/)
-[![Actions Status](https://github.com/rtmigo/commie.python/workflows/unit%20test/badge.svg?branch=master)](https://github.com/rtmigo/commie.python/actions)
-[![Actions Status](https://github.com/rtmigo/commie.python/workflows/pkg%20test/badge.svg?branch=master)](https://github.com/rtmigo/commie.python/actions)
 
-# [commie](https://github.com/rtmigo/commie)
+# [commie](https://github.com/rtmigo/commie_py#readme)
 
 Python package for **extracting comments** from source code.
 
@@ -19,7 +16,7 @@ $ pip3 install commie
 
 # Find comments in a file
 
-``` python
+```python
 from pathlib import Path
 import commie
 
@@ -47,7 +44,7 @@ for comment in commie.iter_comments(Path("/path/to/source.cpp")):
 | `commie.iter_comments_css` | CSS |
 | `commie.iter_comments_sass` | SASS |
 
-``` python
+```python
 import commie
 
 source_code_in_golang:str = ...
@@ -61,7 +58,7 @@ for comment in commie.iter_comments_go(source_code_in_golang):
 
 Method `commie.iter_comments` will try to guess the file format from the provided filename.
 
-``` python
+```python
 from pathlib import Path
 import commie
 
@@ -90,7 +87,7 @@ When single-line comments are adjacent, it makes sense to consider them together
 
 The comments from the example above can be combined into **three groups** as follows:
 
-``` python
+`` python
 from commie import iter_comments, group_singleline_comments
 
 for group in group_singleline_comments(iter_comments(...)):

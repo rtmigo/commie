@@ -100,7 +100,7 @@ for group in group_singleline_comments(iter_comments(...)):
 
 Multi-line comments will also be returned. They will not be grouped with their neighbors.
 
---------------------------------------------------------
+# History
 
 This project was forked from [comment_parser](https://github.com/jeanralphaviles/comment_parser) in 2021. Motivation:
 

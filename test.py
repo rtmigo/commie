@@ -24,7 +24,7 @@ def run():
 
     if a == "lint" or not a:
         print("Running mypy...")
-        package_dir_path = 'xpnt'
+        package_dir_path = 'commie'
         subprocess.check_call([sys.executable, '-m', 'mypy', package_dir_path,
                                '--pretty'])
 

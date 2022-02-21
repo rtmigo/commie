@@ -41,7 +41,7 @@ setup(
     "Operating System :: OS Independent",
   ],
 
-  test_suite='nose.collector',
-  tests_require=['nose'],
+  #test_suite='nose.collector',
+  #//tests_require=['nose'],
   zip_safe=False
 )

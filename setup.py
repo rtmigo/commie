@@ -7,7 +7,7 @@ readme = "# "+readme.partition("\n#")[-1]
 
 setup(
   name="commie",
-  version="1.0.6.post1",
+  version="1.0.6.post2",
 
   author="Artёm IG",
   author_email="ortemeo@gmail.com",

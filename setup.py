@@ -7,11 +7,11 @@ readme = "# "+readme.partition("\n#")[-1]
 
 setup(
   name="commie",
-  version="1.0.5.post1",
+  version="1.0.6",
 
   author="Artёm IG",
   author_email="ortemeo@gmail.com",
-  url='https://github.com/rtmigo/commie',
+  url='https://github.com/rtmigo/commie_py',
 
   packages=find_packages(),
   install_requires=[],
@@ -40,8 +40,4 @@ setup(
     "Programming Language :: Python :: 3.10",
     "Operating System :: OS Independent",
   ],
-
-  #test_suite='nose.collector',
-  #//tests_require=['nose'],
-  zip_safe=False
 )
